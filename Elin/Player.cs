@@ -126,6 +126,9 @@ public class Player : EClass
 		public int sistersDepart;
 
 		[JsonProperty]
+		public int catDepart;
+
+		[JsonProperty]
 		public int married;
 
 		[JsonProperty]
@@ -888,6 +891,20 @@ public class Player : EClass
 		}
 	}
 
+	public class PartySetup : EClass
+	{
+		[JsonProperty]
+		public List<int> uids = new List<int>();
+
+		[JsonProperty]
+		public int ride;
+
+		[JsonProperty]
+		public int parasite;
+	}
+
+	public const int MaxPartySetup = 5;
+
 	[JsonProperty]
 	public ReturnInfo returnInfo;
 
@@ -1157,6 +1174,9 @@ public class Player : EClass
 
 	[JsonProperty]
 	public List<string> favMoongate = new List<string>();
+
+	[JsonProperty]
+	public PartySetup[] partySetups = new PartySetup[5];
 
 	public static int seedHallucination;
 

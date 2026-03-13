@@ -874,6 +874,19 @@ public class AI_Idle : AIAct
 				});
 			}
 		}
+		if (EClass.rnd(owner.isSynced ? 10 : 2000) == 0 && owner.ability.Has(5058))
+		{
+			if (!owner.UseAbility(5058))
+			{
+				owner.AddCondition<ConInsane>(10000);
+				owner.SetHostility(Hostility.Enemy);
+				if (owner.isSynced)
+				{
+					owner.DoHostileAction(EClass.pc);
+				}
+			}
+			yield return Restart();
+		}
 		if (EClass.rnd(35) == 0 && owner.id == "child" && owner.pos.cell.IsSnowTile)
 		{
 			foreach (Chara chara6 in EClass._map.charas)

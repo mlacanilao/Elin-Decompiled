@@ -29,7 +29,7 @@ public class TraitGeneratorWheel : TraitGenerator
 
 	public override bool OnUse(Chara c)
 	{
-		LayerPeople.CreateSelect("", "", delegate(UIList l)
+		LayerPeople.CreateSelect("", "", delegate(BaseList l)
 		{
 			foreach (Chara member in EClass.Branch.members)
 			{

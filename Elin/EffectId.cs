@@ -134,5 +134,6 @@ public enum EffectId
 	Flare = 310,
 	GravityGun = 311,
 	TransBlood = 312,
-	Field = 313
+	Field = 313,
+	SilverCatMigration = 314
 }

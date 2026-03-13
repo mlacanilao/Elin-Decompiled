@@ -103,7 +103,7 @@ public class Party : EClass
 	{
 		if (c.host != null)
 		{
-			ActRide.Unride(c.host, c.host.parasite == c);
+			ActRide.Unride(c.host, c.host.parasite == c, talk: false);
 		}
 		members.Remove(c);
 		uidMembers.Remove(c.uid);
@@ -218,6 +218,24 @@ public class Party : EClass
 			}
 		}
 		return num;
+	}
+
+	public void RegisterSetup(int index)
+	{
+		Player.PartySetup partySetup = new Player.PartySetup();
+		foreach (Chara member in members)
+		{
+			partySetup.uids.Add(member.uid);
+			if (member == EClass.pc.ride)
+			{
+				partySetup.ride = member.uid;
+			}
+			if (member == EClass.pc.parasite)
+			{
+				partySetup.parasite = member.uid;
+			}
+		}
+		EClass.player.partySetups[index] = partySetup;
 	}
 
 	public void Disband()

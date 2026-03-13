@@ -1098,13 +1098,13 @@ public class ActEffect : EClass
 		{
 			CC.PlaySound("clean_floor");
 			Msg.Say("exterminate");
-			List<Chara> list2 = EClass._map.charas.Where((Chara c) => c.isCopy && !c.IsPCFaction).ToList();
-			if (list2.Count == 0)
+			List<Chara> list3 = EClass._map.charas.Where((Chara c) => c.isCopy && !c.IsPCFaction).ToList();
+			if (list3.Count == 0)
 			{
 				Msg.SayNothingHappen();
 				return;
 			}
-			foreach (Chara item in list2)
+			foreach (Chara item in list3)
 			{
 				item.Say("split_fail", item);
 				item.PlayEffect("vanish");
@@ -1125,41 +1125,50 @@ public class ActEffect : EClass
 			break;
 		}
 		case EffectId.LittleSisterMigration:
+		case EffectId.SilverCatMigration:
 		{
-			if (!(EClass._zone is Zone_LittleGarden) && !EClass.game.IsSurvival)
+			bool flag3 = id == EffectId.SilverCatMigration;
+			if (!EClass.game.IsSurvival && ((flag3 && !(EClass._zone is Zone_EternalGarden)) || (!flag3 && !(EClass._zone is Zone_LittleGarden))))
 			{
 				Msg.SayNothingHappen();
 				return;
 			}
-			List<Chara> list3 = new List<Chara>();
-			bool flag3 = false;
+			List<Chara> list2 = new List<Chara>();
+			bool flag4 = false;
 			foreach (Chara chara2 in EClass._map.charas)
 			{
-				if (!chara2.IsPCFactionOrMinion && chara2.id == "littleOne")
+				if (!chara2.IsPCFactionOrMinion && chara2.id == (flag3 ? "cat_silver" : "littleOne"))
 				{
-					if (flag3)
+					if (flag4)
 					{
-						flag3 = false;
+						flag4 = false;
 						continue;
 					}
-					list3.Add(chara2);
-					flag3 = true;
+					list2.Add(chara2);
+					flag4 = true;
 				}
 			}
-			if (list3.Count == 0)
+			if (list2.Count == 0)
 			{
 				Msg.SayNothingHappen();
 				return;
 			}
 			EClass.pc.PlaySound("chime_angel");
-			foreach (Chara item2 in list3)
+			foreach (Chara item2 in list2)
 			{
 				item2.PlayEffect("revive");
 				item2.Destroy();
 			}
-			Msg.Say("little_migration", list3.Count.ToString() ?? "");
-			EClass._zone.ModInfluence(list3.Count);
-			EClass.player.stats.sistersDepart += list3.Count;
+			Msg.Say(flag3 ? "cat_migration" : "little_migration", list2.Count.ToString() ?? "");
+			EClass._zone.ModInfluence(list2.Count);
+			if (flag3)
+			{
+				EClass.player.stats.catDepart += list2.Count;
+			}
+			else
+			{
+				EClass.player.stats.sistersDepart += list2.Count;
+			}
 			break;
 		}
 		case EffectId.MagicMap:
@@ -1229,10 +1238,10 @@ public class ActEffect : EClass
 		case EffectId.EnchantArmorGreat:
 		{
 			bool armor = id == EffectId.EnchantArmor || id == EffectId.EnchantArmorGreat;
-			bool flag6 = id == EffectId.EnchantWeaponGreat || id == EffectId.EnchantArmorGreat;
+			bool flag7 = id == EffectId.EnchantWeaponGreat || id == EffectId.EnchantArmorGreat;
 			if (!tc.isThing)
 			{
-				LayerDragGrid.CreateEnchant(CC, armor, flag6, state);
+				LayerDragGrid.CreateEnchant(CC, armor, flag7, state);
 				return;
 			}
 			cc.PlaySound("identify");
@@ -1243,7 +1252,7 @@ public class ActEffect : EClass
 				tc.ModEncLv(-1);
 				break;
 			}
-			int num6 = (flag6 ? 4 : 2) + (blessed ? 1 : 0);
+			int num6 = (flag7 ? 4 : 2) + (blessed ? 1 : 0);
 			if (tc.encLV >= num6)
 			{
 				cc.Say("enc_resist", tc);
@@ -1256,21 +1265,21 @@ public class ActEffect : EClass
 		case EffectId.Identify:
 		case EffectId.GreaterIdentify:
 		{
-			bool flag5 = id == EffectId.GreaterIdentify;
+			bool flag6 = id == EffectId.GreaterIdentify;
 			if (flag)
 			{
-				Redirect(EffectId.ForgetItems, flag5 ? BlessedState.Cursed : BlessedState.Normal, default(ActRef));
+				Redirect(EffectId.ForgetItems, flag6 ? BlessedState.Cursed : BlessedState.Normal, default(ActRef));
 				break;
 			}
 			if (!tc.isThing)
 			{
-				int count = ((!blessed) ? 1 : (flag5 ? (2 + EClass.rnd(2)) : (3 + EClass.rnd(3))));
-				LayerDragGrid.CreateIdentify(CC, flag5, state, 0, count);
+				int count = ((!blessed) ? 1 : (flag6 ? (2 + EClass.rnd(2)) : (3 + EClass.rnd(3))));
+				LayerDragGrid.CreateIdentify(CC, flag6, state, 0, count);
 				return;
 			}
 			cc.PlaySound("identify");
 			cc.PlayEffect("identify");
-			tc.Thing.Identify(cc.IsPCParty, (!flag5) ? IDTSource.Identify : IDTSource.SuperiorIdentify);
+			tc.Thing.Identify(cc.IsPCParty, (!flag6) ? IDTSource.Identify : IDTSource.SuperiorIdentify);
 			break;
 		}
 		case EffectId.Uncurse:
@@ -1312,16 +1321,16 @@ public class ActEffect : EClass
 			Element orCreateElement2 = tc.elements.GetOrCreateElement(65);
 			Element orCreateElement3 = tc.elements.GetOrCreateElement(67);
 			Element orCreateElement4 = tc.elements.GetOrCreateElement(66);
-			bool flag4 = tc.IsEquipmentOrRangedOrAmmo || tc.IsThrownWeapon;
+			bool flag5 = tc.IsEquipmentOrRangedOrAmmo || tc.IsThrownWeapon;
 			if (flag)
 			{
 				num3 = (int)(0.01f * (float)num3 * (float)power * 0.75f + 500f);
 				if (num3 < 0 || num3 > 10000000)
 				{
 					num3 = 10000000;
-					flag4 = false;
+					flag5 = false;
 				}
-				if (flag4)
+				if (flag5)
 				{
 					if (tc.IsWeapon || tc.IsThrownWeapon || tc.IsAmmo)
 					{
@@ -1343,7 +1352,7 @@ public class ActEffect : EClass
 				{
 					power /= 4;
 				}
-				if (flag4)
+				if (flag5)
 				{
 					if (tc.IsWeapon || tc.IsThrownWeapon || tc.IsAmmo)
 					{
@@ -1720,6 +1729,7 @@ public class ActEffect : EClass
 				break;
 			}
 			CC.Say("abDraw", CC, TC);
+			CC.PlaySound("draw");
 			if (TC.HasCondition<ConGravity>())
 			{
 				CC.SayNothingHappans();
@@ -1753,7 +1763,7 @@ public class ActEffect : EClass
 				break;
 			}
 			Thing thing6 = null;
-			bool flag9 = actRef.n1 == "food";
+			bool flag10 = actRef.n1 == "food";
 			if (actRef.n1 == "money")
 			{
 				int currency = TC.GetCurrency();
@@ -1767,7 +1777,7 @@ public class ActEffect : EClass
 			else
 			{
 				Func<Thing, bool> func = (Thing t) => true;
-				if (flag9)
+				if (flag10)
 				{
 					func = (Thing t) => t.IsFood;
 				}
@@ -2233,13 +2243,13 @@ public class ActEffect : EClass
 		case EffectId.DamageMindGreat:
 		case EffectId.Weaken:
 		{
-			bool flag10 = id == EffectId.DamageBody || id == EffectId.DamageBodyGreat;
+			bool flag11 = id == EffectId.DamageBody || id == EffectId.DamageBodyGreat;
 			bool mind2 = id == EffectId.DamageMind || id == EffectId.DamageMindGreat;
 			int num9 = ((id == EffectId.DamageBody || id == EffectId.DamageMind) ? 1 : (4 + EClass.rnd(4)));
 			if (id == EffectId.Weaken)
 			{
-				flag10 = EClass.rnd(2) == 0;
-				mind2 = !flag10;
+				flag11 = EClass.rnd(2) == 0;
+				mind2 = !flag11;
 				num9 = 1;
 			}
 			else
@@ -2247,10 +2257,10 @@ public class ActEffect : EClass
 				TC.PlayEffect("debuff");
 				TC.PlaySound("debuff");
 			}
-			TC.Say(flag10 ? "damageBody" : "damageMind", TC);
+			TC.Say(flag11 ? "damageBody" : "damageMind", TC);
 			for (int l = 0; l < num9; l++)
 			{
-				TC.DamageTempElements(power, flag10, mind2, id != EffectId.Weaken);
+				TC.DamageTempElements(power, flag11, mind2, id != EffectId.Weaken);
 			}
 			if (TC.IsPC)
 			{
@@ -2263,34 +2273,34 @@ public class ActEffect : EClass
 		case EffectId.EnhanceBodyGreat:
 		case EffectId.EnhanceMindGreat:
 		{
-			bool flag7 = id == EffectId.EnhanceBody || id == EffectId.EnhanceBodyGreat;
+			bool flag8 = id == EffectId.EnhanceBody || id == EffectId.EnhanceBodyGreat;
 			bool mind = id == EffectId.EnhanceMind || id == EffectId.EnhanceMindGreat;
 			if (id != EffectId.EnhanceBody && id != EffectId.EnhanceMind)
 			{
 				EClass.rnd(4);
 			}
-			TC.Say(flag7 ? "enhanceBody" : "enhanceMind", TC);
+			TC.Say(flag8 ? "enhanceBody" : "enhanceMind", TC);
 			TC.PlayEffect("buff");
 			TC.PlaySound("buff");
-			TC.EnhanceTempElements(power, flag7, mind, onlyRenew: true);
+			TC.EnhanceTempElements(power, flag8, mind, onlyRenew: true);
 			break;
 		}
 		case EffectId.RestoreBody:
 		case EffectId.RestoreMind:
 		{
-			bool flag8 = id == EffectId.RestoreBody;
+			bool flag9 = id == EffectId.RestoreBody;
 			if (flag)
 			{
-				Redirect(flag8 ? EffectId.DamageBodyGreat : EffectId.DamageMindGreat, BlessedState.Normal, default(ActRef));
+				Redirect(flag9 ? EffectId.DamageBodyGreat : EffectId.DamageMindGreat, BlessedState.Normal, default(ActRef));
 				break;
 			}
-			TC.Say(flag8 ? "restoreBody" : "restoreMind", TC);
+			TC.Say(flag9 ? "restoreBody" : "restoreMind", TC);
 			TC.PlaySound("heal");
 			TC.PlayEffect("heal");
-			TC.CureHost(flag8 ? CureType.CureBody : CureType.CureMind, power, state);
+			TC.CureHost(flag9 ? CureType.CureBody : CureType.CureMind, power, state);
 			if (blessed)
 			{
-				Redirect(flag8 ? EffectId.EnhanceBodyGreat : EffectId.EnhanceMindGreat, BlessedState.Normal, default(ActRef));
+				Redirect(flag9 ? EffectId.EnhanceBodyGreat : EffectId.EnhanceMindGreat, BlessedState.Normal, default(ActRef));
 			}
 			break;
 		}

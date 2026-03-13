@@ -668,7 +668,7 @@ public class Core : BaseCore
 	{
 	}
 
-	public override void FreezeScreen(float duration = 0.3f)
+	public override void FreezeScreen(float duration = 0.2f)
 	{
 		ui.FreezeScreen(duration);
 	}

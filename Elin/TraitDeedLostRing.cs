@@ -8,7 +8,7 @@ public class TraitDeedLostRing : TraitTool
 			{
 				p.TrySetAct("actReissue", delegate
 				{
-					EClass.pc.Say("use_whip", a, owner);
+					EClass.pc.Say("use_whip", a, a, owner.Name);
 					a.Talk("death_other");
 					EClass.pc.PlaySound("whip");
 					a.PlayAnime(AnimeID.Shiver);

@@ -9,7 +9,8 @@ public class LayerPeople : ELayer
 		Default,
 		Select,
 		Double,
-		Hire
+		Hire,
+		Party
 	}
 
 	public enum ShowMode
@@ -24,6 +25,8 @@ public class LayerPeople : ELayer
 	public ShowMode showMode;
 
 	public LayoutGroup layoutMenu;
+
+	public UISearchPeople search;
 
 	public Action onConfirm;
 
@@ -83,20 +86,34 @@ public class LayerPeople : ELayer
 	{
 		if (multi.Double)
 		{
-			multi.owners[window.windowIndex].OnSwitchContent();
+			InitList(multi.owners[window.windowIndex]);
 		}
 		else
 		{
-			multi.owners[window.idTab].OnSwitchContent();
+			InitList(multi.owners[window.idTab]);
 		}
+	}
+
+	public void InitList(ListOwner o)
+	{
+		if ((bool)search && (!multi.Double || o.main))
+		{
+			search.Init(o);
+		}
+		o.OnSwitchContent();
 	}
 
 	public static LayerPeople Create(Mode mode)
 	{
 		string path = "LayerPeople";
-		if (mode == Mode.Double)
+		switch (mode)
 		{
+		case Mode.Double:
 			path = "LayerPeople/LayerPeopleDouble";
+			break;
+		case Mode.Party:
+			path = "LayerPeople/LayerPeopleDouble_party";
+			break;
 		}
 		return Layer.Create(path) as LayerPeople;
 	}
@@ -127,7 +144,7 @@ public class LayerPeople : ELayer
 
 	public static LayerPeople CreateParty()
 	{
-		LayerPeople layerPeople = Create(Mode.Double);
+		LayerPeople layerPeople = Create(Mode.Party);
 		layerPeople.multi.AddOwner(0, new ListPeopleParty
 		{
 			textHeader = "candidates"
@@ -188,7 +205,7 @@ public class LayerPeople : ELayer
 		return layerPeople;
 	}
 
-	public static LayerPeople CreateSelect(string langHeader, string langHint, Action<UIList> onList, Action<Chara> onClick, Func<Chara, string> _onShowSubText = null)
+	public static LayerPeople CreateSelect(string langHeader, string langHint, Action<BaseList> onList, Action<Chara> onClick, Func<Chara, string> _onShowSubText = null)
 	{
 		LayerPeople layerPeople = Create(Mode.Select);
 		layerPeople.multi.AddOwner(0, new ListPeopleSelect

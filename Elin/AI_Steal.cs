@@ -135,7 +135,7 @@ public class AI_Steal : AI_TargetCard
 							return;
 						}
 					}
-					if (target.ChildrenAndSelfWeight > owner.Evalue(281) * 200 + owner.STR * 100 + 1000)
+					if (target.ChildrenAndSelfWeight > (long)owner.Evalue(281) * 200L + (long)owner.STR * 100L + 1000)
 					{
 						EClass.pc.Say("tooHeavy", target);
 						p.Cancel();

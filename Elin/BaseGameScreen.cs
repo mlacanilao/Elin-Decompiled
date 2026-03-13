@@ -616,28 +616,45 @@ public class BaseGameScreen : EMono
 		emission.rateOverTime = ((currentCondition == Weather.Condition.RainHeavy) ? 750 : 200);
 		EMono.scene.snow.enableEmission = !flag && currentCondition == Weather.Condition.Snow;
 		EMono.scene.ether.enableEmission = !flag && weather.IsEther;
-		bool enableEmission = !flag && weather.IsBlossom;
+		bool flag3 = !flag && weather.IsBlossom;
 		ParticleSystem[] blossoms = EMono.scene.blossoms;
-		for (int i = 0; i < blossoms.Length; i++)
+		foreach (ParticleSystem particleSystem in blossoms)
 		{
-			blossoms[i].enableEmission = enableEmission;
+			particleSystem.enableEmission = flag3;
+			if (flag3)
+			{
+				ParticleSystem.MainModule main = particleSystem.main;
+				ParticleSystem.MinMaxGradient startColor = main.startColor;
+				if (EMono._zone is Zone_Mifu)
+				{
+					startColor.mode = ParticleSystemGradientMode.RandomColor;
+					startColor.gradient = EMono.Colors.particleColors.blossomGradient;
+				}
+				else
+				{
+					startColor.mode = ParticleSystemGradientMode.TwoColors;
+					startColor.colorMin = EMono.Colors.particleColors.blossomMin;
+					startColor.colorMax = EMono.Colors.particleColors.blossomMax;
+				}
+				main.startColor = startColor;
+			}
 		}
-		enableEmission = !flag && currentCondition == Weather.Condition.SnowHeavy && EMono.core.config.graphic.blizzard;
+		flag3 = !flag && currentCondition == Weather.Condition.SnowHeavy && EMono.core.config.graphic.blizzard;
 		blossoms = EMono.scene.blizzards;
 		for (int i = 0; i < blossoms.Length; i++)
 		{
-			blossoms[i].enableEmission = enableEmission;
+			blossoms[i].enableEmission = flag3;
 		}
 		EMono.scene.transBlizzard.localScale = new Vector3(1f, 1f, 1f);
-		bool flag3 = (EMono._zone.IsUnderwater || EMono._map.config.forceGodRay || (EMono.core.config.graphic.godray && !flag && (currentCondition == Weather.Condition.Fine || currentCondition == Weather.Condition.Snow))) && !BuildMenu.Instance;
-		EMono.scene.godray.SetActive(flag3, delegate(bool enabled)
+		bool flag4 = (EMono._zone.IsUnderwater || EMono._map.config.forceGodRay || (EMono.core.config.graphic.godray && !flag && (currentCondition == Weather.Condition.Fine || currentCondition == Weather.Condition.Snow))) && !BuildMenu.Instance;
+		EMono.scene.godray.SetActive(flag4, delegate(bool enabled)
 		{
 			if (!enabled)
 			{
 				EMono.scene.godray.Clear();
 			}
 		});
-		EMono.scene.godrayDust.SetActive(flag3 && EMono.world.date.IsNight);
+		EMono.scene.godrayDust.SetActive(flag4 && EMono.world.date.IsNight);
 		EMono.scene.snow.SetActive(enable: true);
 		EMono.scene.rain.SetActive(enable: true);
 		EMono.scene.ether.SetActive(enable: true);
@@ -658,17 +675,17 @@ public class BaseGameScreen : EMono
 			num2 += EMono.scene.profile.global.snowBrightness;
 		}
 		camSupport.grading.sceneBrightness = num2;
-		ParticleSystem.MainModule main = EMono.scene.rain.main;
-		ParticleSystem.MainModule main2 = EMono.scene.snow.main;
-		ParticleSystem.MainModule main3 = EMono.scene.ether.main;
-		bool flag5 = (main3.prewarm = false);
-		bool prewarm = (main2.prewarm = flag5);
-		main.prewarm = prewarm;
+		ParticleSystem.MainModule main2 = EMono.scene.rain.main;
+		ParticleSystem.MainModule main3 = EMono.scene.snow.main;
+		ParticleSystem.MainModule main4 = EMono.scene.ether.main;
+		bool flag6 = (main4.prewarm = false);
+		bool prewarm = (main3.prewarm = flag6);
+		main2.prewarm = prewarm;
 		blossoms = EMono.scene.blossoms;
 		for (int i = 0; i < blossoms.Length; i++)
 		{
-			ParticleSystem.MainModule main4 = blossoms[i].main;
-			main4.prewarm = false;
+			ParticleSystem.MainModule main5 = blossoms[i].main;
+			main5.prewarm = false;
 		}
 		camSupport.grading.SetGrading();
 	}

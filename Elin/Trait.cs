@@ -1687,6 +1687,7 @@ public class Trait : EClass
 			Add("board_build", 1, 0);
 			Add("book_resident", 1, 0);
 			Add("board_party", 1, 0);
+			Add("board_party2", 1, 0);
 			Add("3", 1, 0);
 			Add("4", 1, 0);
 			Add("5", 1, 0);
@@ -1941,23 +1942,26 @@ public class Trait : EClass
 					break;
 				case ShopType.Moyer:
 				{
-					for (int num12 = 1; num12 <= 17; num12++)
+					for (int num13 = 1; num13 <= 17; num13++)
 					{
-						AddAdvWeek(num12);
+						AddAdvWeek(num13);
 					}
 					break;
 				}
+				case ShopType.KeeperOfGarden:
+					Add("1329", 1, 0);
+					break;
 				case ShopType.StrangeGirl:
 				{
-					int num13 = (EClass.debug.enable ? 20 : (EClass._zone.development / 10));
-					if (num13 > 0)
+					int num12 = (EClass.debug.enable ? 20 : (EClass._zone.development / 10));
+					if (num12 > 0)
 					{
-						Add("syringe_gene", num13, 0);
+						Add("syringe_gene", num12, 0);
 						Add("diary_little", 1, 0);
 					}
-					if (num13 > 10)
+					if (num12 > 10)
 					{
-						Add("syringe_heaven", num13 / 5, 0);
+						Add("syringe_heaven", num12 / 5, 0);
 						Add("1276", 1, 0);
 					}
 					Add("medal", 10, 0);
@@ -2225,6 +2229,7 @@ public class Trait : EClass
 					}
 					return FromFilter("shop_drink");
 				case ShopType.Furniture:
+				case ShopType.KeeperOfGarden:
 					return FromFilter("shop_furniture");
 				case ShopType.Book:
 					return FromFilter("shop_book");

@@ -79,7 +79,7 @@ public class TraitGeneMachine : TraitStasisChamber
 		Chara target = GetTarget();
 		if (target == null)
 		{
-			LayerPeople.CreateSelect("", "", delegate(UIList l)
+			LayerPeople.CreateSelect("", "", delegate(BaseList l)
 			{
 				foreach (Chara member in EClass.Branch.members)
 				{

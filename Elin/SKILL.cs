@@ -30,7 +30,7 @@ public class SKILL
 
 	public const int strategy = 135;
 
-	public const int riding = 226;
+	public const int parasite = 227;
 
 	public const int evasionPlus = 151;
 
@@ -46,7 +46,7 @@ public class SKILL
 
 	public const int lumberjack = 225;
 
-	public const int parasite = 227;
+	public const int riding = 226;
 
 	public const int digging = 230;
 
@@ -64,7 +64,7 @@ public class SKILL
 
 	public const int weaponBow = 104;
 
-	public const int END = 71;
+	public const int STR = 70;
 
 	public const int weaponAxe = 102;
 
@@ -84,7 +84,7 @@ public class SKILL
 
 	public const int vigor = 62;
 
-	public const int PV = 65;
+	public const int DV = 64;
 
 	public const int HIT = 66;
 
@@ -92,9 +92,9 @@ public class SKILL
 
 	public const int FPV = 68;
 
-	public const int STR = 70;
-
 	public const int climbing = 242;
+
+	public const int END = 71;
 
 	public const int weaponStaff = 103;
 
@@ -132,7 +132,7 @@ public class SKILL
 
 	public const int fishing = 245;
 
-	public const int DV = 64;
+	public const int PV = 65;
 
 	public const int carpentry = 255;
 
@@ -204,55 +204,57 @@ public class SKILL
 
 	public const int eleLightning = 912;
 
-	public const int anatomy = 290;
-
-	public const int appraising = 289;
-
-	public const int building = 288;
-
-	public const int cooking = 287;
-
-	public const int eleDarkness = 913;
-
-	public const int reading = 285;
-
-	public const int negotiation = 291;
-
-	public const int stealing = 281;
-
-	public const int handicraft = 261;
-
-	public const int weaving = 260;
-
-	public const int jewelry = 259;
-
 	public const int sculpture = 258;
 
 	public const int alchemy = 257;
 
 	public const int blacksmith = 256;
 
+	public const int handicraft = 261;
+
 	public const int lockpicking = 280;
 
-	public const int investing = 292;
+	public const int stealing = 281;
+
+	public const int reading = 285;
 
 	public const int farming = 286;
 
+	public const int eleDarkness = 913;
+
+	public const int cooking = 287;
+
+	public const int building = 288;
+
+	public const int appraising = 289;
+
+	public const int anatomy = 290;
+
+	public const int negotiation = 291;
+
+	public const int jewelry = 259;
+
+	public const int investing = 292;
+
 	public const int regeneration = 300;
-
-	public const int env = 313;
-
-	public const int disarmTrap = 293;
-
-	public const int eleFire = 910;
 
 	public const int eleCold = 911;
 
-	public const int hygine = 310;
+	public const int eleFire = 910;
+
+	public const int env = 313;
 
 	public const int fun = 312;
 
-	public const int memorization = 307;
+	public const int bladder = 311;
+
+	public const int disarmTrap = 293;
+
+	public const int hygine = 310;
+
+	public const int weaving = 260;
+
+	public const int faith = 306;
 
 	public const int magicDevice = 305;
 
@@ -264,26 +266,24 @@ public class SKILL
 
 	public const int meditation = 301;
 
-	public const int faith = 306;
-
-	public const int bladder = 311;
+	public const int memorization = 307;
 
 	public static readonly int[] IDS = new int[134]
 	{
 		133, 132, 131, 130, 123, 122, 110, 111, 109, 108,
-		107, 134, 106, 120, 135, 226, 151, 152, 200, 207,
-		210, 220, 225, 227, 230, 235, 237, 240, 241, 105,
-		150, 104, 71, 102, 50, 51, 55, 56, 57, 60,
-		61, 62, 65, 66, 67, 68, 70, 242, 103, 72,
+		107, 134, 106, 120, 135, 227, 151, 152, 200, 207,
+		210, 220, 225, 226, 230, 235, 237, 240, 241, 105,
+		150, 104, 70, 102, 50, 51, 55, 56, 57, 60,
+		61, 62, 64, 66, 67, 68, 242, 71, 103, 72,
 		74, 75, 76, 77, 78, 79, 80, 90, 91, 92,
-		93, 94, 100, 101, 73, 245, 64, 255, 916, 917,
+		93, 94, 100, 101, 73, 245, 65, 255, 916, 917,
 		918, 919, 921, 922, 923, 924, 925, 926, 950, 951,
 		952, 953, 915, 954, 956, 957, 958, 959, 960, 961,
 		962, 963, 964, 972, 971, 970, 965, 250, 955, 914,
-		920, 912, 290, 289, 288, 287, 913, 285, 291, 281,
-		261, 260, 259, 258, 257, 256, 280, 292, 286, 300,
-		313, 293, 910, 911, 310, 312, 307, 305, 304, 303,
-		302, 301, 306, 311
+		920, 912, 258, 257, 256, 261, 280, 281, 285, 286,
+		913, 287, 288, 289, 290, 291, 259, 292, 300, 911,
+		910, 313, 312, 311, 293, 310, 260, 306, 305, 304,
+		303, 302, 301, 307
 	};
 }
 public class Skill : Element

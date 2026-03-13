@@ -1,15 +1,10 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ItemGeneral : UIItem, IPrefImage
 {
-	public enum Mode
-	{
-		Default,
-		Slave
-	}
-
 	private const int IconSize = 40;
 
 	private const int IconPadding = 10;
@@ -24,7 +19,13 @@ public class ItemGeneral : UIItem, IPrefImage
 
 	private int count;
 
-	public void SetChara(Chara c, Mode mode = Mode.Default)
+	private bool built;
+
+	private Dictionary<string, UIButton> subButtons = new Dictionary<string, UIButton>();
+
+	private Dictionary<string, Component> prefabs = new Dictionary<string, Component>();
+
+	public void SetChara(Chara c, BaseListPeople list = null)
 	{
 		card = c;
 		c.SetImage(button1.icon);
@@ -34,7 +35,18 @@ public class ItemGeneral : UIItem, IPrefImage
 			text += ("(" + "maid".lang() + ")").TagSize(12);
 		}
 		FontColor c2 = FontColor.ButtonGeneral;
-		if (c.isDead)
+		if (list is ListPeopleParty)
+		{
+			if (c.isDead)
+			{
+				c2 = FontColor.Bad;
+			}
+			else if (!(list as ListPeopleParty).CanJoinParty(c))
+			{
+				c2 = FontColor.Warning;
+			}
+		}
+		else if (c.isDead)
 		{
 			c2 = FontColor.Bad;
 		}
@@ -46,12 +58,11 @@ public class ItemGeneral : UIItem, IPrefImage
 		{
 			c2 = FontColor.Warning;
 		}
-		if (mode == Mode.Slave)
+		if (list is ListPeopleBuySlave)
 		{
 			text = text + " " + c.bio.TextBioSlave(c);
 		}
 		button1.mainText.SetText(text, c2);
-		_ = button1.icon.rectTransform;
 	}
 
 	public RenderRow GetRenderRow()
@@ -83,11 +94,20 @@ public class ItemGeneral : UIItem, IPrefImage
 		count = 0;
 	}
 
-	public UIButton AddSubButton(Sprite sprite, Action action, string lang = null, Action<UITooltip> onTooltip = null)
+	public UIButton AddSubButton(Sprite sprite, Action action, string lang = null, Action<UITooltip> onTooltip = null, string id = null)
 	{
-		UIButton uIButton = Util.Instantiate<UIButton>("UI/Element/Button/SubButton", base.transform);
-		uIButton.Rect().anchoredPosition = new Vector2(count * -40 - 20 - 10, 0f);
+		UIButton uIButton;
+		if (built)
+		{
+			uIButton = subButtons[id];
+		}
+		else
+		{
+			uIButton = Util.Instantiate<UIButton>("UI/Element/Button/SubButton", base.transform);
+			uIButton.Rect().anchoredPosition = new Vector2(count * -40 - 20 - 10, 0f);
+		}
 		uIButton.icon.sprite = sprite;
+		uIButton.onClick.RemoveAllListeners();
 		uIButton.onClick.AddListener(delegate
 		{
 			action();
@@ -104,7 +124,14 @@ public class ItemGeneral : UIItem, IPrefImage
 			uIButton.tooltip.enable = true;
 		}
 		uIButton.highlightTarget = button1;
-		count++;
+		if (!built)
+		{
+			count++;
+			if (id != null)
+			{
+				subButtons[id] = uIButton;
+			}
+		}
 		return uIButton;
 	}
 
@@ -146,7 +173,14 @@ public class ItemGeneral : UIItem, IPrefImage
 
 	public T AddPrefab<T>(string id) where T : Component
 	{
-		return Util.Instantiate<T>("UI/Element/Item/Extra/" + id, base.transform);
+		T val = prefabs.TryGetValue(id) as T;
+		if (val != null)
+		{
+			return val;
+		}
+		val = Util.Instantiate<T>("UI/Element/Item/Extra/" + id, base.transform);
+		prefabs[id] = val;
+		return val;
 	}
 
 	public void SetSound(SoundData data = null)
@@ -175,5 +209,6 @@ public class ItemGeneral : UIItem, IPrefImage
 		{
 			rectTransform.sizeDelta = new Vector2(count * -40 - 10 - 3, 0f);
 		}
+		built = true;
 	}
 }

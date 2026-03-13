@@ -25,7 +25,7 @@ public class LayerEditPlaylist : ELayer
 		{
 			list.callbacks = new UIList.Callback<BGMData, ItemGeneral>
 			{
-				onInstantiate = delegate(BGMData a, ItemGeneral b)
+				onRedraw = delegate(BGMData a, ItemGeneral b, int i)
 				{
 					b.SetMainText(((a.id > 1) ? "♪ " : "") + a._name.IsEmpty(a.name).ToTitleCase());
 					b.button1.keyText.text = a.id.ToString() ?? "";
@@ -34,7 +34,7 @@ public class LayerEditPlaylist : ELayer
 						b.AddSubButton(EClass.core.refs.icons.resume, delegate
 						{
 							EClass.Sound.PlayBGM(a);
-						});
+						}, null, null, "play");
 					}
 					if (main && layer.mode == Mode.Playlist)
 					{
@@ -42,12 +42,12 @@ public class LayerEditPlaylist : ELayer
 						{
 							BGMData select2 = items.Move(a, 1);
 							list.OnMove(a, select2);
-						});
+						}, null, null, "down");
 						b.AddSubButton(EClass.core.refs.icons.up, delegate
 						{
 							BGMData select = items.Move(a, -1);
 							list.OnMove(a, select);
-						});
+						}, null, null, "up");
 					}
 					b.Build();
 					if (!single)

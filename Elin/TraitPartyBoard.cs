@@ -6,7 +6,11 @@ public class TraitPartyBoard : TraitBoard
 	{
 		if (EClass._zone.IsPCFaction)
 		{
-			p.TrySetAct("LayerPeople", () => LayerPeople.CreateParty(), owner);
+			p.TrySetAct("party_setup", delegate
+			{
+				LayerPeople.CreateParty();
+				return false;
+			}, owner);
 		}
 	}
 }

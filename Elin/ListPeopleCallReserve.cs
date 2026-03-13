@@ -8,39 +8,36 @@ public class ListPeopleCallReserve : BaseListPeople
 	public override void OnInstantiate(Chara a, ItemGeneral b)
 	{
 		b.SetSubText(a.job.GetName().ToTitleCase(), 280);
-		if (a.trait.CanBeBanished)
+		b.AddSubButton(EClass.core.refs.icons.trash, delegate
 		{
-			b.AddSubButton(EClass.core.refs.icons.trash, delegate
+			Action func = delegate
 			{
-				Action func = delegate
+				EClass.Home.RemoveReserve(a);
+				a.OnBanish();
+				list.List();
+				SE.Trash();
+			};
+			if (skipDialog)
+			{
+				func();
+			}
+			else
+			{
+				Dialog.Choice("dialogDeleteRecruit", delegate(Dialog d)
 				{
-					EClass.Home.RemoveReserve(a);
-					a.OnBanish();
-					list.List();
-					SE.Trash();
-				};
-				if (skipDialog)
-				{
-					func();
-				}
-				else
-				{
-					Dialog.Choice("dialogDeleteRecruit", delegate(Dialog d)
+					d.AddButton("yes".lang(), delegate
 					{
-						d.AddButton("yes".lang(), delegate
-						{
-							func();
-						});
-						d.AddButton("yesAndSkip".lang(), delegate
-						{
-							func();
-							skipDialog = true;
-						});
-						d.AddButton("no".lang());
+						func();
 					});
-				}
-			});
-		}
+					d.AddButton("yesAndSkip".lang(), delegate
+					{
+						func();
+						skipDialog = true;
+					});
+					d.AddButton("no".lang());
+				});
+			}
+		}, null, null, "remove").SetActive(a.trait.CanBeBanished);
 		AddSubButtonWork(b, a);
 	}
 

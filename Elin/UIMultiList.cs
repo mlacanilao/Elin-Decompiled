@@ -9,7 +9,7 @@ public class UIMultiList : MonoBehaviour
 
 	public Window[] windows;
 
-	public UIList[] lists;
+	public UIDynamicList[] lists;
 
 	public UIHeader[] headers;
 

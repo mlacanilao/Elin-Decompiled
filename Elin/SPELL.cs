@@ -224,7 +224,7 @@ public class SPELL
 
 	public const int miasma_Chaos = 50710;
 
-	public const int sword_Impact = 51015;
+	public const int sword_Chaos = 51010;
 
 	public const int funnel_Chaos = 50610;
 
@@ -244,7 +244,7 @@ public class SPELL
 
 	public const int bolt_Impact = 50315;
 
-	public const int sword_Chaos = 51010;
+	public const int sword_Impact = 51015;
 
 	public const int flare_Chaos = 51210;
 
@@ -280,7 +280,7 @@ public class SPELL
 
 	public const int puddle_Ether = 50912;
 
-	public const int SpTransmutePutit = 8791;
+	public const int SpTransmuteBroom = 8790;
 
 	public const int flare_Darkness = 51203;
 
@@ -322,7 +322,7 @@ public class SPELL
 
 	public const int SpSpeedUp = 8510;
 
-	public const int SpTransmuteBroom = 8790;
+	public const int SpTransmutePutit = 8791;
 
 	public const int SpIncognito = 8780;
 
@@ -601,12 +601,12 @@ public class SPELL
 		50413, 50513, 50613, 50713, 50813, 50913, 51013, 51113, 50115, 51214,
 		51114, 51014, 50914, 50814, 50612, 50714, 50514, 50414, 50314, 50515,
 		50114, 51213, 50614, 50512, 50412, 50312, 50910, 51115, 51215, 50116,
-		50810, 50710, 51015, 50610, 50410, 50310, 50110, 51209, 51109, 51009,
-		50510, 50315, 51010, 51210, 50815, 50112, 51211, 51111, 51011, 50911,
+		50810, 50710, 51010, 50610, 50410, 50310, 50110, 51209, 51109, 51009,
+		50510, 50315, 51015, 51210, 50815, 50112, 51211, 51111, 51011, 50911,
 		51110, 50811, 50611, 50511, 50411, 50311, 50915, 50111, 50711, 50912,
-		8791, 51203, 8503, 8502, 8501, 8500, 8491, 8490, 8480, 8471,
+		8790, 51203, 8503, 8502, 8501, 8500, 8491, 8490, 8480, 8471,
 		8470, 8450, 8430, 8406, 8405, 8404, 8403, 8504, 8402, 8506,
-		8510, 8790, 8780, 8776, 8775, 8770, 8710, 8708, 8707, 8706,
+		8510, 8791, 8780, 8776, 8775, 8770, 8710, 8708, 8707, 8706,
 		8705, 8704, 8702, 8700, 8555, 8550, 8507, 8401, 8400, 8390,
 		8202, 8201, 8200, 7800, 7010, 7009, 7008, 7007, 7006, 7005,
 		7004, 7003, 7002, 7001, 51116, 8215, 8220, 8221, 8230, 8380,

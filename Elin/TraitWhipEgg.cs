@@ -13,7 +13,7 @@ public class TraitWhipEgg : TraitWhipLove
 			{
 				p.TrySetAct("actWhip", delegate
 				{
-					EClass.pc.Say("use_whip", c, owner);
+					EClass.pc.Say("use_whip", EClass.pc, c, owner.Name);
 					EClass.pc.Say("use_scope2", c);
 					EClass.player.forceTalk = true;
 					EClass.pc.Talk("egg");

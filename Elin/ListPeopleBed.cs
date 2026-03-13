@@ -10,7 +10,7 @@ public class ListPeopleBed : ListPeople
 		{
 		}, null, delegate
 		{
-		});
+		}, "bed");
 		uIButton.icon.SetAlpha((c.FindBed() != null) ? 0.9f : 0.4f);
 		uIButton.SetTooltip(delegate(UITooltip t)
 		{

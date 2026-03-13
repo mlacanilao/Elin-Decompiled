@@ -444,9 +444,9 @@ public class Element : EClass
 	{
 		return type switch
 		{
-			SourceValueType.Chara => v * (100 + (lv - 1 + EClass.rnd(lv / 2 + 1)) * source.lvFactor / 10) / 100 + EClass.rnd(lv / 3) * source.lvFactor / 100, 
+			SourceValueType.Chara => v * (100 + (lv - 1 + EClass.rnd(lv / 2 + 1)) * source.lvFactor / 10) / 100 + (long)EClass.rnd(lv / 3) * (long)source.lvFactor / 100, 
 			SourceValueType.Fixed => v, 
-			_ => v * ((source.encFactor == 0) ? 100 : (50 + EClass.rnd(100) + EClass.rnd((int)Mathf.Sqrt(lv * 100)) * source.encFactor / 100)) / 100, 
+			_ => v * ((source.encFactor == 0) ? 100 : (50 + EClass.rnd(100) + (long)EClass.rnd((int)Mathf.Sqrt(lv * 100)) * (long)source.encFactor / 100)) / 100, 
 		};
 	}
 
@@ -1150,7 +1150,7 @@ public class Element : EClass
 		return num;
 	}
 
-	public static int GetResistDamage(int dmg, int v, int power = 0)
+	public static long GetResistDamage(long dmg, int v, int power = 0)
 	{
 		int num = GetResistLv(v);
 		if (power > 0 && num > 0)
@@ -1159,7 +1159,7 @@ public class Element : EClass
 		}
 		if (num >= 4)
 		{
-			return 0;
+			return 0L;
 		}
 		return num switch
 		{

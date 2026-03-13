@@ -766,7 +766,7 @@ public class ThingContainer : List<Thing>
 		return s;
 	}
 
-	public int GetCurrency(string id, ref int sum, SourceMaterial.Row mat = null)
+	public long GetCurrency(string id, ref long sum, SourceMaterial.Row mat = null)
 	{
 		using (Enumerator enumerator = GetEnumerator())
 		{
@@ -785,7 +785,7 @@ public class ThingContainer : List<Thing>
 		}
 		if (sum < 0)
 		{
-			sum = int.MaxValue;
+			sum = 2147483647L;
 		}
 		return sum;
 	}

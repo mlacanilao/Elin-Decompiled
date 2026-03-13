@@ -4060,10 +4060,14 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 		{
 			return EClass._zone.influence;
 		}
-		int sum = 0;
+		long sum = 0L;
 		SourceMaterial.Row mat = null;
 		things.GetCurrency(id, ref sum, mat);
-		return sum;
+		if (sum > int.MaxValue)
+		{
+			sum = 2147483647L;
+		}
+		return (int)sum;
 	}
 
 	public virtual void HealHPHost(int a, HealSource origin = HealSource.None)
@@ -4248,7 +4252,7 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 				{
 					num3++;
 				}
-				dmg = Element.GetResistDamage((int)dmg, Evalue(e.source.aliasRef), num3);
+				dmg = Element.GetResistDamage(dmg, Evalue(e.source.aliasRef), num3);
 				dmg = dmg * 100 / (100 + Mathf.Clamp(Evalue(961) * 5, -50, 200));
 				dmg = dmg * Mathf.Max(100 - Evalue(93), 10) / 100;
 			}
@@ -4485,7 +4489,7 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 								Chara.AddCondition<ConFractured>((int)Mathf.Max(10f, 30f - Mathf.Sqrt(Evalue(436))));
 								hp = Mathf.Min(half * (int)Mathf.Sqrt(Evalue(436) * 2) / 100, MaxHP / 3);
 							});
-							goto IL_1077;
+							goto IL_1075;
 						}
 					}
 					if (zoneInstanceBout != null && (bool)LayerDrama.Instance)
@@ -4513,7 +4517,7 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 							if (EClass.player.invlunerable)
 							{
 								EvadeDeath(null);
-								goto IL_1077;
+								goto IL_1075;
 							}
 						}
 						if (Evalue(1220) > 0 && Chara.stamina.value >= (IsPC ? (Chara.stamina.max / 2) : (Chara.stamina.max / 3 * 2)))
@@ -4531,8 +4535,8 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 				}
 			}
 		}
-		goto IL_1077;
-		IL_1077:
+		goto IL_1075;
+		IL_1075:
 		if (trait.CanBeAttacked)
 		{
 			renderer.PlayAnime(AnimeID.HitObj);
@@ -6375,7 +6379,7 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 		{
 			spatial = false;
 		}
-		if (rootCard.Dist(EClass.pc) < EClass.player.lightRadius + 1 || !spatial)
+		if (rootCard.Dist(EClass.pc) < 6 || !spatial)
 		{
 			return rootCard.pos.PlaySound(id, isSynced || !spatial, v, spatial);
 		}

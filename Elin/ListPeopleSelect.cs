@@ -3,7 +3,7 @@ using System.Linq;
 
 public class ListPeopleSelect : BaseListPeople
 {
-	public Action<UIList> onList;
+	public Action<UIDynamicList> onList;
 
 	public Action<Chara> onClick;
 

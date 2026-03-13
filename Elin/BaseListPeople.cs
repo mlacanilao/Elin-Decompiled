@@ -36,9 +36,12 @@ public class BaseListPeople : ListOwner<Chara, ItemGeneral>
 	{
 		list.callbacks = new UIList.Callback<Chara, ItemGeneral>
 		{
-			onInstantiate = delegate(Chara a, ItemGeneral b)
+			onInstantiate = delegate
 			{
-				b.SetChara(a, (this is ListPeopleBuySlave) ? ItemGeneral.Mode.Slave : ItemGeneral.Mode.Default);
+			},
+			onRedraw = delegate(Chara a, ItemGeneral b, int i)
+			{
+				b.SetChara(a, this);
 				OnInstantiate(a, b);
 				b.Build();
 			},
@@ -101,7 +104,7 @@ public class BaseListPeople : ListOwner<Chara, ItemGeneral>
 						{
 						});
 					}
-				}).icon.SetAlpha((bed != null) ? 1f : 0.4f);
+				}, "home").icon.SetAlpha((bed != null) ? 1f : 0.4f);
 			}
 		}
 		if (ShowCharaSheet && EClass.debug.showExtra)
@@ -112,7 +115,7 @@ public class BaseListPeople : ListOwner<Chara, ItemGeneral>
 				LayerChara layerChara = EClass.ui.AddLayerDontCloseOthers<LayerChara>();
 				layerChara.windows[0].SetRect(EClass.core.refs.rects.center);
 				layerChara.SetChara(a);
-			}, "charaInfo");
+			}, "charaInfo", null, "sheet");
 		}
 		if (IsDisabled(a))
 		{
@@ -146,7 +149,7 @@ public class BaseListPeople : ListOwner<Chara, ItemGeneral>
 		}, null, delegate(UITooltip t)
 		{
 			WriteHobbies(t, a, roomWork);
-		}).icon.SetAlpha(flag ? 1f : 0.4f);
+		}, "room").icon.SetAlpha(flag ? 1f : 0.4f);
 	}
 
 	public void WriteHobbies(UITooltip t, Chara a, BaseArea roomWork)
@@ -455,7 +458,7 @@ public class BaseListPeople : ListOwner<Chara, ItemGeneral>
 		}
 		foreach (Chara member2 in EClass.pc.party.members)
 		{
-			if (member2.memberType == memberType && !list.items.Contains(member2))
+			if (member2.memberType == memberType && !list.Contains(member2))
 			{
 				list.Add(member2);
 			}
@@ -481,21 +484,6 @@ public class BaseListPeople : ListOwner<Chara, ItemGeneral>
 			{
 				layer.showMode = layer.showMode.NextEnum();
 				List();
-			});
-		}
-		if (!(this is ListPeopleParty))
-		{
-			return;
-		}
-		menuLeft.AddSpace();
-		menuLeft.AddHeader("party");
-		if (EClass.pc.party.members.Count > 1)
-		{
-			menuLeft.AddButton("disband", delegate
-			{
-				EClass.pc.party.Disband();
-				SE.Trash();
-				RefreshAll();
 			});
 		}
 	}

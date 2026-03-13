@@ -377,6 +377,8 @@ public class SourceElement : SourceDataInt<SourceElement.Row>
 	public override void OnAfterImportData()
 	{
 		Core.SetCurrent();
+		map.Clear();
+		alias.Clear();
 		foreach (Row row in rows)
 		{
 			map[row.id] = row;
@@ -401,6 +403,7 @@ public class SourceElement : SourceDataInt<SourceElement.Row>
 			AddRow(ele, num + num2 + 1200, "flare_");
 			num2++;
 		}
+		initialized = false;
 	}
 
 	public void AddRow(Row ele, int id, string idOrg)

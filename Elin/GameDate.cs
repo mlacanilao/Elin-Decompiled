@@ -236,7 +236,7 @@ public class GameDate : Date
 					Thing thing4 = ThingGen.Create("parchment");
 					thing4.MakeRefFrom(value2, null, simple: true);
 					thing4.SetStr(53, "letter_love");
-					Thing p3 = ThingGen.CreateParcel(null, thing3, thing4);
+					Thing p3 = ThingGen.CreateParcel(null, thing3, ThingGen.Create("1165"), thing4);
 					EClass.world.SendPackage(p3);
 				}
 			}

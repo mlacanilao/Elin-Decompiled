@@ -50,5 +50,6 @@ public enum ShopType
 	StrangeGirl,
 	Sweet,
 	Moyer,
-	Curry
+	Curry,
+	KeeperOfGarden
 }

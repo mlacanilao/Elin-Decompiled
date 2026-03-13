@@ -430,7 +430,7 @@ public class UIHomeInfo : EMono
 				b.button1.mainText.SetColor(a.GetFontColor());
 				if (a.onClick != null)
 				{
-					b.AddSubButton(EMono.core.refs.icons.go, a.onClick);
+					b.AddSubButton(EMono.core.refs.icons.go, a.onClick, null, null, "go");
 				}
 				b.Build();
 				if (a.onShowTooltip != null)

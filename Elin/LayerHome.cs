@@ -215,7 +215,7 @@ public class LayerHome : ELayer
 				b.AddSubButton(ELayer.core.refs.icons.go, delegate
 				{
 					ELayer.screen.Focus(a.points[0]);
-				}, "tFocus");
+				}, "tFocus", null, "focus");
 				b.Build();
 			},
 			onList = delegate
@@ -246,7 +246,7 @@ public class LayerHome : ELayer
 				b.AddSubButton(ELayer.core.refs.icons.go, delegate
 				{
 					ELayer.screen.Focus(a.GetPoint());
-				}, "tFocus");
+				}, "tFocus", null, "focus");
 				b.Build();
 			},
 			onList = delegate

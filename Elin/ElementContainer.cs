@@ -481,6 +481,10 @@ public class ElementContainer : EClass
 		if (!e.source.aliasParent.IsEmpty())
 		{
 			int num2 = ValueWithoutLink(e.source.aliasParent) - ValueWithoutLink(e.source.id);
+			if (num2 > 10000)
+			{
+				num2 = 10000;
+			}
 			num = ((num2 < 0) ? (num * 100 / (100 - num2 * 25)) : (num * (100 + num2 * 5) / 100));
 		}
 		if (num < 0)

@@ -4,6 +4,16 @@ using UnityEngine;
 public class ColorProfile : EScriptable
 {
 	[Serializable]
+	public class ParticleColors
+	{
+		public Color blossomMin;
+
+		public Color blossomMax;
+
+		public Gradient blossomGradient;
+	}
+
+	[Serializable]
 	public class RarityColors
 	{
 		public Color colorC;
@@ -119,6 +129,8 @@ public class ColorProfile : EScriptable
 	public Gradient gradientLVComparison;
 
 	public PCLights pcLights;
+
+	public ParticleColors particleColors;
 
 	public Color colorIngCost;
 

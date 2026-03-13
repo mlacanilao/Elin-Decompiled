@@ -24,7 +24,7 @@ public class ListOwner : EClass
 
 	public ListOwner other;
 
-	public UIList list;
+	public UIDynamicList list;
 
 	public WindowMenu menu;
 

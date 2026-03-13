@@ -22,5 +22,6 @@ public enum ID_Achievement
 	FAITH_HEALING,
 	ONEV,
 	JURE,
-	BELL
+	BELL,
+	NERUN2
 }

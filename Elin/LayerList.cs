@@ -194,7 +194,6 @@ public class LayerList : ELayer
 			{
 				item.button1.mainText.text = getText(a);
 				item.DisableIcon();
-				item.Build();
 				if (noSound)
 				{
 					item.button1.soundClick = null;
@@ -203,6 +202,7 @@ public class LayerList : ELayer
 				{
 					onInstantiate(a, item);
 				}
+				item.Build();
 			},
 			onList = delegate
 			{

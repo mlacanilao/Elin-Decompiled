@@ -4964,6 +4964,13 @@ public class Chara : Card, IPathfindWalker
 				EQ_ID("dagger_hocho");
 			}
 			break;
+		case "mad_rich":
+			if (onCreate)
+			{
+				int a = EClass.rndHalf(100 + (EClass.debug.enable ? 10 : EClass._zone.influence) * 50 + (int)Mathf.Sqrt(EClass._zone.DangerLv) * 100 + (int)Mathf.Sqrt(EClass.pc.FameLv) * 100 + EClass._zone.development * 10);
+				ModCurrency(a);
+			}
+			break;
 		}
 		if (!TryEquipRanged())
 		{
@@ -7444,6 +7451,9 @@ public class Chara : Card, IPathfindWalker
 		case UIList.SortMode.ByFeat:
 			sortVal = -GetTotalFeat();
 			break;
+		case UIList.SortMode.ByPartyOrder:
+			sortVal = EClass.pc.party.members.IndexOf(this);
+			return;
 		default:
 			sortVal = sourceCard._index * ((!IsHuman) ? 1 : (-1));
 			break;
