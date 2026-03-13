@@ -40,7 +40,8 @@ public class UIList : BaseList
 		ByID,
 		ByWeightSingle,
 		ByWorkk,
-		ByFeat
+		ByFeat,
+		ByPartyOrder
 	}
 
 	public enum ItemHeight
@@ -380,11 +381,11 @@ public class UIList : BaseList
 		return GetPair(item).component as T;
 	}
 
-	public void AddDynamic(object item)
+	public override void AddDynamic(object item)
 	{
 	}
 
-	public void RemoveDynamic(object item)
+	public override void RemoveDynamic(object item)
 	{
 		BaseCore.Instance.StopEventSystem(GetPair(item).component, delegate
 		{
@@ -685,7 +686,7 @@ public class UIList : BaseList
 		Refresh();
 	}
 
-	public void OnMove(object o, object select = null)
+	public override void OnMove(object o, object select = null)
 	{
 		List();
 		Select(select ?? o);
@@ -818,6 +819,11 @@ public class UIList : BaseList
 			rectTransform.pivot = pivot;
 			rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, (float)rows * gridLayoutGroup.cellSize.y);
 		}
+	}
+
+	public override bool Contains(object item)
+	{
+		return items.Contains(item);
 	}
 
 	public T GetMold<T>() where T : Component

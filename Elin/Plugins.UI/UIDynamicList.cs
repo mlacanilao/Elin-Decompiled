@@ -43,6 +43,8 @@ public class UIDynamicList : BaseList
 
 	public float minHeight;
 
+	public Func<object, bool> funcFilter;
+
 	[NonSerialized]
 	public bool first = true;
 
@@ -84,7 +86,10 @@ public class UIDynamicList : BaseList
 			autoSized = true;
 			this.RebuildLayoutTo<Layer>();
 			GridLayoutGroup component = dsv.itemPrototype.GetComponent<GridLayoutGroup>();
-			columns = (int)(this.Rect().rect.width / (component.spacing.x + component.cellSize.x));
+			if ((bool)component)
+			{
+				columns = (int)(this.Rect().rect.width / (component.spacing.x + component.cellSize.x));
+			}
 			if (columns < 1)
 			{
 				columns = 1;
@@ -102,8 +107,35 @@ public class UIDynamicList : BaseList
 		row.objects.Add(o);
 	}
 
-	public void RemoveObj(object o)
+	public void Remove(object o)
 	{
+		objects.Remove(o);
+	}
+
+	public override void AddDynamic(object item)
+	{
+		Add(item);
+		Refresh();
+	}
+
+	public override void RemoveDynamic(object item)
+	{
+		BaseCore.Instance.FreezeScreen(0.1f);
+		Remove(item);
+		List();
+	}
+
+	public override void OnMove(object o, object select = null)
+	{
+		BaseCore.Instance.FreezeScreen(0.1f);
+		List();
+		Select(select ?? o);
+		SE.Click();
+	}
+
+	public override bool Contains(object item)
+	{
+		return objects.Contains(item);
 	}
 
 	public void AddHeader(Action<UIItem> onSetHeader)
@@ -247,9 +279,26 @@ public class UIDynamicList : BaseList
 		sortMode = m;
 		Clear();
 		callbacks.OnList(sortMode);
-		foreach (object @object in objects)
+		if (callbacks.useSort)
 		{
-			_Add(@object);
+			objects.Sort((object a, object b) => callbacks.OnSort(b, sortMode) - callbacks.OnSort(a, sortMode));
+		}
+		if (funcFilter != null)
+		{
+			foreach (object @object in objects)
+			{
+				if (funcFilter(@object))
+				{
+					_Add(@object);
+				}
+			}
+		}
+		else
+		{
+			foreach (object object2 in objects)
+			{
+				_Add(object2);
+			}
 		}
 		Layer root = base.transform.GetComponentInParent<Layer>();
 		root = root.parent?.GetComponent<Layer>() ?? root;

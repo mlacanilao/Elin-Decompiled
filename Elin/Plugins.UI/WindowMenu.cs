@@ -67,7 +67,7 @@ public class WindowMenu
 	public UIButton AddButton(string idLang, Action<UIButton> onClick, Sprite sprite = null, string idButton = "Default")
 	{
 		Init();
-		UIButton b = _AddButton(idButton, sprite, onClick);
+		UIButton b = _AddButton(idButton, sprite);
 		b.onClick.AddListener(delegate
 		{
 			onClick(b);
@@ -83,7 +83,7 @@ public class WindowMenu
 	public UIButton AddButtonSimple(Func<string> funcText, Action<UIButton> onClick = null, Sprite sprite = null, string idButton = "Simple")
 	{
 		Init();
-		UIButton b = _AddButton(idButton, sprite, onClick);
+		UIButton b = _AddButton(idButton, sprite);
 		b.onClick.AddListener(delegate
 		{
 			onClick?.Invoke(b);
@@ -104,7 +104,7 @@ public class WindowMenu
 	public UIButton AddButton2Line(string idLang, Func<string> funcText, Action<UIButton> onClick = null, Sprite sprite = null, string idButton = "2line")
 	{
 		Init();
-		UIButton b = _AddButton(idButton, sprite, onClick);
+		UIButton b = _AddButton(idButton, sprite);
 		b.onClick.AddListener(delegate
 		{
 			onClick?.Invoke(b);
@@ -123,7 +123,7 @@ public class WindowMenu
 		return b;
 	}
 
-	public UIButton _AddButton(string idButton, Sprite sprite, Action<UIButton> onClick)
+	public UIButton _AddButton(string idButton, Sprite sprite)
 	{
 		Init();
 		UIButton uIButton = Util.Instantiate<UIButton>("UI/Window/Base/Element/ButtonWindowMenu_" + idButton, layout);
@@ -137,5 +137,16 @@ public class WindowMenu
 			header.SetActive(enable: true);
 		}
 		return uIButton;
+	}
+
+	public UIItem AddItem(string idItem)
+	{
+		Init();
+		UIItem result = Util.Instantiate<UIItem>("UI/Window/Base/Element/ItemWindowMenu_" + idItem, layout);
+		if ((bool)header)
+		{
+			header.SetActive(enable: true);
+		}
+		return result;
 	}
 }

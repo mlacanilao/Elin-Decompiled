@@ -66,6 +66,23 @@ public class BaseList : MonoBehaviour
 	{
 	}
 
+	public virtual void AddDynamic(object item)
+	{
+	}
+
+	public virtual void RemoveDynamic(object item)
+	{
+	}
+
+	public virtual bool Contains(object item)
+	{
+		return false;
+	}
+
+	public virtual void OnMove(object o, object select = null)
+	{
+	}
+
 	public void RefreshNoItem()
 	{
 		if (!transNoItem)
