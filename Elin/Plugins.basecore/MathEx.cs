@@ -8,4 +8,13 @@ public static class MathEx
 		}
 		return (int)a;
 	}
+
+	public static long Max(long a, long b)
+	{
+		if (a >= b)
+		{
+			return a;
+		}
+		return b;
+	}
 }
