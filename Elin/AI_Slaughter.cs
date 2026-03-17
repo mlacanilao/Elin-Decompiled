@@ -129,4 +129,12 @@ public class AI_Slaughter : AI_TargetCard
 			target.SetCensored(enable: false);
 		}
 	}
+
+	public override void OnSetOwner()
+	{
+		if (parent is AI_Goto aI_Goto)
+		{
+			aI_Goto.ignoreConnection = true;
+		}
+	}
 }

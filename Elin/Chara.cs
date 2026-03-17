@@ -1607,7 +1607,7 @@ public class Chara : Card, IPathfindWalker
 					list.Add(new Tuple<string, int, int>(array[0], (array.Length > 1) ? int.Parse(array[1]) : 0, num2));
 				}
 			}
-			Tuple<string, int, int> tuple = list.RandomItemWeighted((Tuple<string, int, int> a) => 10000 / (100 + (_genLv - a.Item3) * 25));
+			Tuple<string, int, int> tuple = list.RandomItemWeighted((Tuple<string, int, int> a) => 10000 / Mathf.Max(100 + (_genLv - a.Item3) * 25, 1));
 			if (!bp.idEle.IsEmpty())
 			{
 				tuple = list.Where((Tuple<string, int, int> a) => a.Item1 == bp.idEle || "ele" + a.Item1 == bp.idEle).FirstOrDefault() ?? tuple;

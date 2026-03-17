@@ -81,6 +81,14 @@ public class AI_Shear : AI_TargetCard
 		yield return Do(seq);
 	}
 
+	public override void OnSetOwner()
+	{
+		if (parent is AI_Goto aI_Goto)
+		{
+			aI_Goto.ignoreConnection = true;
+		}
+	}
+
 	public static int GetFurLv(Chara c)
 	{
 		return Mathf.Clamp(c.c_fur / 10 + 1, 1, 5);

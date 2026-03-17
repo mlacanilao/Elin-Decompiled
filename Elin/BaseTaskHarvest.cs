@@ -291,6 +291,14 @@ public class BaseTaskHarvest : TaskDesignation
 		return base.CanProgress();
 	}
 
+	public override void OnStart()
+	{
+		if (tool != owner.Tool)
+		{
+			SetTarget(owner);
+		}
+	}
+
 	public int[] GetToolEfficiency(SourceMaterial.Row mat)
 	{
 		switch (mat.category)

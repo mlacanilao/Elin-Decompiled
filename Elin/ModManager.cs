@@ -306,7 +306,7 @@ public class ModManager : ModManagerCore
 		InitPackagesMeta();
 		LoadLoadOrder();
 		packages.Sort((BaseModPackage a, BaseModPackage b) => a.loadPriority - b.loadPriority);
-		foreach (BaseModPackage item in packages.Where((BaseModPackage p) => !p.isInPackages && p.willActivate))
+		foreach (BaseModPackage item in packages.Where((BaseModPackage p) => !p.isInPackages && p.willActivate && !p.id.IsEmpty()))
 		{
 			if (mappedPackages.TryGetValue(item.id, out var value) && value.isInPackages)
 			{

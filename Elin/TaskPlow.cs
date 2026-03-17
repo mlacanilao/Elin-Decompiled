@@ -82,4 +82,8 @@ public class TaskPlow : TaskDesignation
 		}
 		return HitResult.Valid;
 	}
+
+	public override void OnSetOwner()
+	{
+	}
 }

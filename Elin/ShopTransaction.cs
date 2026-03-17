@@ -165,9 +165,17 @@ public class ShopTransaction : EClass
 			{
 				num += (int)Mathf.Sqrt(Mathf.Abs(item5.price * 5));
 			}
-			if (item5.thing.trait is TraitDeed)
+			string id = item5.thing.id;
+			if (!(id == "hammer_garokk"))
 			{
-				EClass.player.flags.landDeedBought += item5.num;
+				if (id == "deed")
+				{
+					EClass.player.flags.landDeedBought += item5.num;
+				}
+			}
+			else
+			{
+				EClass.player.flags.garokkHammerBought += item5.num;
 			}
 		}
 		if (num >= 10)

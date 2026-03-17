@@ -84,10 +84,11 @@ public class SourceImporter : EClass
 
 	public IEnumerable<SourceData> ImportFilesCached(IEnumerable<string> imports, bool resetData = true)
 	{
+		string[] prefetchSheetNames = new string[2] { "Element", "Material" };
 		SourceCache[] array = imports.Select(SourceCache.GetOrCreate).Distinct().ToArray();
-		Dictionary<SourceCache, (string, ISheet[], ISheet)> dictionary = (from c in array
+		Dictionary<SourceCache, (string, ISheet[], ISheet[])> dictionary = (from c in array
 			where c.IsDirtyOrEmpty
-			select PrefetchWorkbook(c.SheetFile.FullName)).ToArray().ToDictionary(((string file, ISheet[] sheets, ISheet element) p) => SourceCache.GetOrCreate(p.file));
+			select PrefetchWorkbook(c.SheetFile.FullName, prefetchSheetNames)).ToArray().ToDictionary(((string file, ISheet[] sheets, ISheet[] fetched) p) => SourceCache.GetOrCreate(p.file));
 		SourceElement elements = EClass.sources.elements;
 		HashSet<SourceData> hashSet = new HashSet<SourceData> { elements };
 		SourceCache[] array2 = array;
@@ -98,50 +99,60 @@ public class SourceImporter : EClass
 			{
 				sourceCache.SetMod(value);
 			}
-			SourceData.BaseRow[] rows;
 			if (sourceCache.IsDirtyOrEmpty)
 			{
-				if (dictionary.TryGetValue(sourceCache, out var value2) && value2.Item3 != null)
+				if (dictionary.TryGetValue(sourceCache, out var value2) && value2.Item3.Length != 0)
 				{
-					SourceData.BaseRow[] item = LoadBySheetName(value2.Item3, value2.Item1).Item2;
-					sourceCache.EmplaceCache("Element", item);
-					value?.sourceRows.UnionWith(item);
-					Debug.Log(string.Format("#source workbook {0}:{1}:{2}", arg, "Element", item.Length));
+					ISheet[] item = value2.Item3;
+					foreach (ISheet sheet in item)
+					{
+						SourceData.BaseRow[] item2 = LoadBySheetName(sheet, value2.Item1).Item2;
+						sourceCache.EmplaceCache(sheet.SheetName, item2);
+						value?.sourceRows.UnionWith(item2);
+						Debug.Log($"#source workbook {arg}:{sheet.SheetName}:{item2.Length}");
+					}
 				}
+				continue;
 			}
-			else if (sourceCache.TryGetCache("Element", out rows))
+			string[] array3 = prefetchSheetNames;
+			foreach (string text in array3)
 			{
-				int num = elements.ImportRows(rows);
-				value?.sourceRows.UnionWith(rows);
-				Debug.Log(string.Format("#source workbook-cache {0}:{1}:{2}", arg, "Element", num));
+				if (sourceCache.TryGetCache(text, out var rows))
+				{
+					int num = elements.ImportRows(rows);
+					value?.sourceRows.UnionWith(rows);
+					Debug.Log($"#source workbook-cache {arg}:{text}:{num}");
+				}
 			}
 		}
 		array2 = array;
 		foreach (SourceCache sourceCache2 in array2)
 		{
-			string text = sourceCache2.SheetFile.ShortPath();
+			string text2 = sourceCache2.SheetFile.ShortPath();
+			string key;
 			if (sourceCache2.IsDirtyOrEmpty)
 			{
 				if (!dictionary.TryGetValue(sourceCache2, out var value3) || value3.Item2.Length == 0)
 				{
 					continue;
 				}
-				Debug.Log("#source workbook " + text);
-				ISheet[] item2 = value3.Item2;
-				foreach (ISheet sheet in item2)
+				Debug.Log("#source workbook " + text2);
+				ISheet[] item = value3.Item2;
+				foreach (ISheet sheet2 in item)
 				{
-					if (sheet.SheetName == "Element")
+					key = sheet2.SheetName;
+					if (key == "Element" || key == "Material")
 					{
 						continue;
 					}
-					var (sourceData, array3) = LoadBySheetName(sheet, value3.Item1);
+					var (sourceData, array4) = LoadBySheetName(sheet2, value3.Item1);
 					if ((object)sourceData != null)
 					{
-						int? num2 = array3?.Length;
+						int? num2 = array4?.Length;
 						if (num2.HasValue && num2.GetValueOrDefault() > 0)
 						{
-							sourceCache2.EmplaceCache(sheet.SheetName, array3);
-							sourceCache2.Mod?.sourceRows.UnionWith(array3);
+							sourceCache2.EmplaceCache(sheet2.SheetName, array4);
+							sourceCache2.Mod?.sourceRows.UnionWith(array4);
 							hashSet.Add(sourceData);
 						}
 					}
@@ -150,10 +161,10 @@ public class SourceImporter : EClass
 			}
 			foreach (KeyValuePair<string, SourceData.BaseRow[]> item3 in sourceCache2.Source)
 			{
-				item3.Deconstruct(out var key, out var value4);
-				string text2 = key;
-				SourceData.BaseRow[] array4 = value4;
-				SourceData sourceData2 = FindSourceByName(text2);
+				item3.Deconstruct(out key, out var value4);
+				string text3 = key;
+				SourceData.BaseRow[] array5 = value4;
+				SourceData sourceData2 = FindSourceByName(text3);
 				if (!(sourceData2 is SourceThingV))
 				{
 					if (sourceData2 is SourceElement || (object)sourceData2 == null)
@@ -165,14 +176,14 @@ public class SourceImporter : EClass
 				{
 					sourceData2 = EClass.sources.things;
 				}
-				if (array4 == null)
+				if (array5 == null)
 				{
-					Debug.Log("#source cached rows are empty " + text + ":" + text2);
+					Debug.Log("#source cached rows are empty " + text2 + ":" + text3);
 					continue;
 				}
-				int num3 = sourceData2.ImportRows(array4);
-				sourceCache2.Mod?.sourceRows.UnionWith(array4);
-				Debug.Log($"#source workbook-cache {text}:{text2}:{num3}");
+				int num3 = sourceData2.ImportRows(array5);
+				sourceCache2.Mod?.sourceRows.UnionWith(array5);
+				Debug.Log($"#source workbook-cache {text2}:{text3}:{num3}");
 				hashSet.Add(sourceData2);
 			}
 		}
@@ -201,29 +212,25 @@ public class SourceImporter : EClass
 		Debug.Log("#source initialized data");
 	}
 
-	private (string file, ISheet[] sheets, ISheet element) PrefetchWorkbook(string file)
+	private (string file, ISheet[] sheets, ISheet[] fetched) PrefetchWorkbook(string file, string[] prefetchNames)
 	{
 		using FileStream @is = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 		XSSFWorkbook xSSFWorkbook = new XSSFWorkbook((Stream)@is);
 		List<ISheet> list = new List<ISheet>();
-		ISheet item = null;
+		List<ISheet> list2 = new List<ISheet>();
 		for (int i = 0; i < xSSFWorkbook.NumberOfSheets; i++)
 		{
 			ISheet sheetAt = xSSFWorkbook.GetSheetAt(i);
-			SourceData sourceData = FindSourceByName(sheetAt.SheetName);
-			if (!(sourceData is SourceElement))
+			if (FindSourceByName(sheetAt.SheetName) != null && prefetchNames.Contains(sheetAt.SheetName))
 			{
-				if ((object)sourceData != null)
-				{
-					list.Add(sheetAt);
-				}
+				list2.Add(sheetAt);
 			}
 			else
 			{
-				item = sheetAt;
+				list.Add(sheetAt);
 			}
 		}
 		Debug.Log("#source workbook-prefetch " + file.ShortPath());
-		return (file: file, sheets: list.ToArray(), element: item);
+		return (file: file, sheets: list.ToArray(), fetched: list2.ToArray());
 	}
 }

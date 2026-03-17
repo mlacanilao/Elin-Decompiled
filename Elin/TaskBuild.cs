@@ -44,9 +44,9 @@ public class TaskBuild : TaskBaseBuild
 		{
 			if (useHeld)
 			{
-				if (EClass.pc.held != null)
+				if (owner.held != null)
 				{
-					return EClass.pc.held.trait.CanExtendBuild;
+					return owner.held.trait.CanExtendBuild;
 				}
 				return false;
 			}
@@ -77,21 +77,21 @@ public class TaskBuild : TaskBaseBuild
 		{
 			disableRotateBlock = false;
 		}
-		if (useHeld && EClass.pc.held != null)
+		if (useHeld && owner.held != null)
 		{
 			if (EClass._zone.IsRegion)
 			{
 				return false;
 			}
-			if (!(EClass._zone is Zone_Tent) && !EClass._zone.IsPCFactionOrTent && EClass.pc.held.trait.CanBeOnlyBuiltInHome)
+			if (!(EClass._zone is Zone_Tent) && !EClass._zone.IsPCFactionOrTent && owner.held.trait.CanBeOnlyBuiltInHome)
 			{
 				return false;
 			}
-			if (EClass._zone.RestrictBuild && !EClass.pc.held.trait.CanBuildInTown)
+			if (EClass._zone.RestrictBuild && !owner.held.trait.CanBuildInTown)
 			{
 				return false;
 			}
-			if (EClass.pc.held.trait is TraitBlock && pos.HasBlock && !EClass.pc.held.trait.IsDoor && !disableRotateBlock)
+			if (owner.held.trait is TraitBlock && pos.HasBlock && !owner.held.trait.IsDoor && !disableRotateBlock)
 			{
 				return true;
 			}
@@ -105,13 +105,13 @@ public class TaskBuild : TaskBaseBuild
 		{
 			return "actRotateWall".lang();
 		}
-		if (useHeld && EClass.pc.held != null)
+		if (useHeld && owner.held != null)
 		{
-			if (EClass.pc.held.category.id == "seed")
+			if (owner.held.category.id == "seed")
 			{
 				return "actInstallSeed".lang();
 			}
-			if (EClass.pc.held.id == "fertilizer")
+			if (owner.held.id == "fertilizer")
 			{
 				return "actInstallFertilizer".lang();
 			}
@@ -282,7 +282,7 @@ public class TaskBuild : TaskBaseBuild
 	{
 		if (useHeld)
 		{
-			if (EClass.pc.held == null || EClass.pc.held.GetRootCard() != EClass.pc || pos.Distance(EClass.pc.pos) > 1 || !pos.IsInBounds)
+			if (owner.held == null || owner.held.GetRootCard() != owner || pos.Distance(owner.pos) > 1 || !pos.IsInBounds)
 			{
 				return;
 			}
@@ -296,17 +296,17 @@ public class TaskBuild : TaskBaseBuild
 			disableRotateBlock = true;
 			ActionMode.Build.FixBridge(pos, recipe);
 			bridgeHeight = ActionMode.Build.bridgeHeight;
-			target = (EClass.pc.held.category.installOne ? EClass.pc.held.Split(1) : EClass.pc.held);
+			target = (owner.held.category.installOne ? owner.held.Split(1) : owner.held);
 			if (target.trait is TraitTile)
 			{
 				target.ModNum(-1);
 			}
 			dir = recipe._dir;
-			EClass.pc.LookAt(pos);
-			EClass.pc.renderer.PlayAnime(AnimeID.Attack_Place, pos);
+			owner.LookAt(pos);
+			owner.renderer.PlayAnime(AnimeID.Attack_Place, pos);
 			if (target.id == "statue_weird")
 			{
-				EClass.pc.Say("statue_install");
+				owner.Say("statue_install");
 			}
 		}
 		lastPos = pos.Copy();
@@ -337,14 +337,14 @@ public class TaskBuild : TaskBaseBuild
 				if (pos.HasWallOrFence && pos.cell.blockDir != 2 && pos.cell.blockDir != recipe._dir)
 				{
 					pos.cell.blockDir = 2;
-					EClass.pc.PlaySound(pos.matBlock.GetSoundImpact());
+					owner.PlaySound(pos.matBlock.GetSoundImpact());
 					pos.RefreshTile();
 					return;
 				}
 				if (pos.sourceRoofBlock.tileType.IsWallOrFence && pos.cell._roofBlockDir % 4 != 2 && pos.cell._roofBlockDir % 4 != recipe._dir)
 				{
 					pos.cell._roofBlockDir = (byte)(pos.cell._roofBlockDir / 4 * 4 + 2);
-					EClass.pc.PlaySound(pos.matBlock.GetSoundImpact());
+					owner.PlaySound(pos.matBlock.GetSoundImpact());
 					pos.RefreshTile();
 					return;
 				}
@@ -360,7 +360,7 @@ public class TaskBuild : TaskBaseBuild
 		EClass._map.RefreshShadow(pos.x, pos.z);
 		EClass._map.RefreshShadow(pos.x, pos.z - 1);
 		EClass._map.RefreshFOV(pos.x, pos.z);
-		EClass.pc.renderer.SetFirst(first: true);
+		owner.renderer.SetFirst(first: true);
 		if (recipe.IsFloor)
 		{
 			foreach (Card item in pos.ListThings<TraitNewZone>())
@@ -376,7 +376,7 @@ public class TaskBuild : TaskBaseBuild
 				{
 					foreach (Chara item2 in p.ListCharas())
 					{
-						EClass.pc.Kick(item2, ignoreSelf: true, karmaLoss: false, show: false);
+						owner.Kick(item2, ignoreSelf: true, karmaLoss: false, show: false);
 					}
 				}
 			});

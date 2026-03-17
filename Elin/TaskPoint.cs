@@ -125,6 +125,14 @@ public class TaskPoint : Task, IInspect
 		while (Loop);
 	}
 
+	public override void OnSetOwner()
+	{
+		if (parent is AI_Goto aI_Goto)
+		{
+			aI_Goto.ignoreConnection = true;
+		}
+	}
+
 	public void OnInspect()
 	{
 	}

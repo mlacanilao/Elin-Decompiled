@@ -540,4 +540,12 @@ public class AI_Fuck : AIAct
 			}
 		}
 	}
+
+	public override void OnSetOwner()
+	{
+		if (parent is AI_Goto aI_Goto)
+		{
+			aI_Goto.ignoreConnection = true;
+		}
+	}
 }

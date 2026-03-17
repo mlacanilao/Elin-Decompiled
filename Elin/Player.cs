@@ -732,6 +732,18 @@ public class Player : EClass
 			}
 		}
 
+		public int garokkHammerBought
+		{
+			get
+			{
+				return ints[22];
+			}
+			set
+			{
+				ints[22] = value;
+			}
+		}
+
 		[OnSerializing]
 		private void _OnSerializing(StreamingContext context)
 		{
