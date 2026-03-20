@@ -1,5 +1,31 @@
 public static class MathEx
 {
+	public static bool IsSameSign(int a, int b)
+	{
+		if (a < 0 || b < 0)
+		{
+			if (a < 0)
+			{
+				return b < 0;
+			}
+			return false;
+		}
+		return true;
+	}
+
+	public static int ClampToInt(long a)
+	{
+		if (a > int.MaxValue)
+		{
+			return int.MaxValue;
+		}
+		if (a < int.MinValue)
+		{
+			return int.MinValue;
+		}
+		return (int)a;
+	}
+
 	public static int Min(long a, int b = int.MaxValue)
 	{
 		if (a > b)
