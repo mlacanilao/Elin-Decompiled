@@ -30,7 +30,7 @@ public class AI_Slaughter : AI_TargetCard
 
 	public override IEnumerable<Status> Run()
 	{
-		yield return DoGoto(target);
+		yield return DoGoto(target, 1, ignoreConnection: true);
 		if (target != owner)
 		{
 			target.Chara.AddCondition<ConWait>(1000, force: true);
@@ -127,14 +127,6 @@ public class AI_Slaughter : AI_TargetCard
 		{
 			target.Chara.RemoveCondition<ConWait>();
 			target.SetCensored(enable: false);
-		}
-	}
-
-	public override void OnSetOwner()
-	{
-		if (parent is AI_Goto aI_Goto)
-		{
-			aI_Goto.ignoreConnection = true;
 		}
 	}
 }

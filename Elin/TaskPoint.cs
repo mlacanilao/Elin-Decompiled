@@ -16,7 +16,7 @@ public class TaskPoint : Task, IInspect
 
 	public virtual int destDist => 0;
 
-	public virtual bool destIgnoreConnection => false;
+	public virtual bool destIgnoreConnection => true;
 
 	public virtual bool isBlock => false;
 
@@ -123,14 +123,6 @@ public class TaskPoint : Task, IInspect
 			}
 		}
 		while (Loop);
-	}
-
-	public override void OnSetOwner()
-	{
-		if (parent is AI_Goto aI_Goto)
-		{
-			aI_Goto.ignoreConnection = true;
-		}
 	}
 
 	public void OnInspect()

@@ -11,6 +11,8 @@ public class AttackProcess : EClass
 
 	public long toHitBase;
 
+	public long evasion;
+
 	public int dNum;
 
 	public int dDim;
@@ -18,8 +20,6 @@ public class AttackProcess : EClass
 	public int dBonus;
 
 	public int toHitFix;
-
-	public int evasion;
 
 	public int penetration;
 
@@ -155,7 +155,7 @@ public class AttackProcess : EClass
 		toolRange = weapon?.trait as TraitToolRange;
 		attackType = AttackType.Slash;
 		attackStyle = AttackStyle.Default;
-		evasion = 0;
+		evasion = 0L;
 		penetration = 0;
 		distMod = 100;
 		attackIndex = _attackIndex;
@@ -366,11 +366,11 @@ public class AttackProcess : EClass
 			evasion = EClass.curve(TC.PER / 3 + TC.Evalue(150), 50, 10) + TC.DV + 25;
 			if (TC.isChara && TC.Chara.isBlind)
 			{
-				evasion /= 2;
+				evasion /= 2L;
 			}
 			if (TC.HasCondition<ConDim>())
 			{
-				evasion /= 2;
+				evasion /= 2L;
 			}
 			if (TC.isChara && TC.Chara.HasHigherGround(CC))
 			{
@@ -822,7 +822,7 @@ public class AttackProcess : EClass
 					continue;
 				}
 				int num10 = 25;
-				int num11 = EClass.rnd(num * (100 + item.Value * 10) / 500 + 5);
+				long num11 = EClass.rnd(num * (100 + item.Value * 10) / 500 + 5);
 				num11 = num11 * (100 + GetTwoHandEncBonus(CC, weapon)) / 100;
 				if (num11 >= 0)
 				{

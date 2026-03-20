@@ -34,11 +34,7 @@ public class GrowSystem : EClass
 		}
 	}
 
-	public static SourceObj.Row[] sourceSnowTree = new SourceObj.Row[2]
-	{
-		EClass.sources.objs.map[54],
-		EClass.sources.objs.map[55]
-	};
+	private static SourceObj.Row[] _sourceSnowTree;
 
 	public const int DivStage = 30;
 
@@ -57,6 +53,24 @@ public class GrowSystem : EClass
 	public int afterHarvestTile;
 
 	public string idHarvestThing;
+
+	public static SourceObj.Row[] SourceSnowTree
+	{
+		get
+		{
+			object obj = _sourceSnowTree;
+			if (obj == null)
+			{
+				obj = new SourceObj.Row[2]
+				{
+					EClass.sources.objs.map[54],
+					EClass.sources.objs.map[55]
+				};
+				_sourceSnowTree = (SourceObj.Row[])obj;
+			}
+			return (SourceObj.Row[])obj;
+		}
+	}
 
 	public virtual RenderData RenderHarvest => source.renderData;
 

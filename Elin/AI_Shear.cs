@@ -32,7 +32,7 @@ public class AI_Shear : AI_TargetCard
 
 	public override IEnumerable<Status> Run()
 	{
-		yield return DoGoto(target);
+		yield return DoGoto(target, 1, ignoreConnection: true);
 		int furLv = GetFurLv(target.Chara);
 		Progress_Custom seq = new Progress_Custom
 		{
@@ -79,14 +79,6 @@ public class AI_Shear : AI_TargetCard
 			}
 		}.SetDuration((6 + furLv * 6) * 100 / (100 + owner.Tool.material.hardness * 2), 3);
 		yield return Do(seq);
-	}
-
-	public override void OnSetOwner()
-	{
-		if (parent is AI_Goto aI_Goto)
-		{
-			aI_Goto.ignoreConnection = true;
-		}
 	}
 
 	public static int GetFurLv(Chara c)

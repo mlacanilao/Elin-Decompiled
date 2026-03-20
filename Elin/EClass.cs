@@ -58,7 +58,7 @@ public class EClass
 
 	public static int rnd(long a)
 	{
-		return Rand.rnd((int)a);
+		return Rand.rnd(MathEx.ClampToInt(a));
 	}
 
 	public static int rnd(int a)

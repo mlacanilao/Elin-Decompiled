@@ -4,6 +4,8 @@ public class TaskPlow : TaskDesignation
 {
 	public override CursorInfo CursorIcon => CursorSystem.Dig;
 
+	public override bool destIgnoreConnection => false;
+
 	public override bool CanPressRepeat => true;
 
 	public override int destDist
@@ -81,9 +83,5 @@ public class TaskPlow : TaskDesignation
 			return HitResult.Invalid;
 		}
 		return HitResult.Valid;
-	}
-
-	public override void OnSetOwner()
-	{
 	}
 }

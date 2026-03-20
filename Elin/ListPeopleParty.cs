@@ -2,17 +2,6 @@ using System.Linq;
 
 public class ListPeopleParty : BaseListPeople
 {
-	public override void OnCreate()
-	{
-		list.sorts = new UIList.SortMode[3]
-		{
-			UIList.SortMode.ByFeat,
-			UIList.SortMode.ByJob,
-			UIList.SortMode.ByRace
-		};
-		list.sortMode = UIList.SortMode.ByFeat;
-	}
-
 	public bool CanJoinParty(Chara c)
 	{
 		if (!c.IsPC)

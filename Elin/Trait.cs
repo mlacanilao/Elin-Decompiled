@@ -1676,8 +1676,8 @@ public class Trait : EClass
 			{
 				AddThing(ThingGen.Create(id2, MATERIAL.GetRandomMaterialFromCategory(50, "rock", EClass.sources.materials.alias["granite"]).id).SetNum(10));
 			}
-			Add("scroll_alias", 1, 0);
-			Add("scroll_biography", 1, 0);
+			Add("scroll_alias", 10, 0);
+			Add("scroll_biography", 10, 0);
 			Add("1329", 1, 0);
 			break;
 		}

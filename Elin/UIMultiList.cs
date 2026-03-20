@@ -42,7 +42,7 @@ public class UIMultiList : MonoBehaviour
 	{
 		foreach (ListOwner owner in owners)
 		{
-			owner.list.sortMode = ((owner is ListPeopleParty) ? UIList.SortMode.ByFeat : m);
+			owner.list.sortMode = m;
 		}
 		if (Double)
 		{

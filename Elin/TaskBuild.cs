@@ -354,9 +354,14 @@ public class TaskBuild : TaskBaseBuild
 		{
 			bridgeHeight = 150;
 		}
+		Chara chara = owner;
 		recipe.Build(this);
+		owner = chara;
 		resources.Clear();
-		EClass.player.flags.OnBuild(recipe);
+		if (owner.IsPC)
+		{
+			EClass.player.flags.OnBuild(recipe);
+		}
 		EClass._map.RefreshShadow(pos.x, pos.z);
 		EClass._map.RefreshShadow(pos.x, pos.z - 1);
 		EClass._map.RefreshFOV(pos.x, pos.z);

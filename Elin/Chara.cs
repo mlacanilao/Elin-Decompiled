@@ -1618,11 +1618,11 @@ public class Chara : Card, IPathfindWalker
 				num = tuple.Item3 + base.LV - source.LV;
 			}
 		}
-		if (source.name == "*r")
+		if (trait.UseRandomName)
 		{
 			base.c_altName = NameGen.getRandomName();
 		}
-		if (source.GetText("aka") == "*r" || trait.UseRandomAlias)
+		if (trait.UseRandomAlias)
 		{
 			_alias = AliasGen.GetRandomAlias();
 		}

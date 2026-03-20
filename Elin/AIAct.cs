@@ -455,10 +455,10 @@ public class AIAct : Act
 
 	public Status DoGoto(Card card, Func<Status> _onChildFail = null)
 	{
-		return DoGoto(card, (card.isChara || card.pos.cell.blocked) ? 1 : 0, _onChildFail);
+		return DoGoto(card, (card.isChara || card.pos.cell.blocked) ? 1 : 0, ignoreConnection: false, _onChildFail);
 	}
 
-	public Status DoGoto(Card card, int dist, Func<Status> _onChildFail = null)
+	public Status DoGoto(Card card, int dist, bool ignoreConnection = false, Func<Status> _onChildFail = null)
 	{
 		if (card != null && card == owner.held)
 		{
@@ -468,7 +468,7 @@ public class AIAct : Act
 		{
 			return _onChildFail?.Invoke() ?? Cancel();
 		}
-		SetChild(new AI_Goto(card, dist), _onChildFail);
+		SetChild(new AI_Goto(card, dist, ignoreConnection), _onChildFail);
 		return TickChild();
 	}
 

@@ -124,7 +124,9 @@ public class TraitChara : Trait
 		}
 	}
 
-	public virtual bool UseRandomAlias => false;
+	public virtual bool UseRandomName => owner.source.name == "*r";
+
+	public virtual bool UseRandomAlias => owner.source.GetText("aka") == "*r";
 
 	public virtual bool IsWearingPanty => EClass.pc.faction.IsWearingPanty(owner);
 

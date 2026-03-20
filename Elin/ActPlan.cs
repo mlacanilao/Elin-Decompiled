@@ -307,6 +307,10 @@ public class ActPlan : EClass
 		Item item = list[0];
 		return delegate
 		{
+			if (item.act is AIAct)
+			{
+				(item.act as AIAct).owner = EClass.pc;
+			}
 			if (performed && !item.act.CanPressRepeat)
 			{
 				return false;

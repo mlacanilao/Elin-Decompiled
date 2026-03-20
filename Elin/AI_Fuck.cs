@@ -105,7 +105,7 @@ public class AI_Fuck : AIAct
 		int destDist = ((Type == FuckType.fuck) ? 1 : 1);
 		if (owner.host != target)
 		{
-			yield return DoGoto(target.pos, destDist);
+			yield return DoGoto(target.pos, destDist, ignoreConnection: true);
 		}
 		cc.Say((variation == Variation.Slime) ? "slime_start" : ((variation == Variation.Bloodsuck) ? "suck_start" : (Type.ToString() + "_start")), cc, tc);
 		isFail = () => !tc.IsAliveInCurrentZone || tc.Dist(owner) > 3;
@@ -132,7 +132,7 @@ public class AI_Fuck : AIAct
 			progress = i;
 			if (owner.host != target)
 			{
-				yield return DoGoto(target.pos, destDist);
+				yield return DoGoto(target.pos, destDist, ignoreConnection: true);
 			}
 			switch (Type)
 			{
@@ -538,14 +538,6 @@ public class AI_Fuck : AIAct
 					break;
 				}
 			}
-		}
-	}
-
-	public override void OnSetOwner()
-	{
-		if (parent is AI_Goto aI_Goto)
-		{
-			aI_Goto.ignoreConnection = true;
 		}
 	}
 }
