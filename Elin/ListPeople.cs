@@ -21,6 +21,14 @@ public class ListPeople : BaseListPeople
 		}
 	}
 
+	public override string TextHeader => memberType switch
+	{
+		FactionMemberType.Default => "_listOf".lang("residents".lang()), 
+		FactionMemberType.Livestock => "_listOf".lang("livestock".lang()), 
+		FactionMemberType.Guest => "_listOf".lang("guests".lang()), 
+		_ => textTab, 
+	};
+
 	public override bool ShowCharaSheet => true;
 
 	public override bool ShowGoto => true;

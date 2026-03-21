@@ -89,7 +89,7 @@ public class ModUtil : EClass
 
 	public static ModPackage FindSourceRowPackage(SourceData.BaseRow row)
 	{
-		return ModManagerCore.Instance.MappedPackages.Values.FirstOrDefault((EMod p) => p.sourceRows.Contains(row)) as ModPackage;
+		return ModManagerCore.Instance.packages.OfType<ModPackage>().FirstOrDefault((ModPackage p) => p.sourceRows.Contains(row));
 	}
 
 	public static ModPackage GetModPackage(string modId)

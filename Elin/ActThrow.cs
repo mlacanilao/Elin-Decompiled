@@ -127,7 +127,14 @@ public class ActThrow : ActBaseAttack
 		c.Say("throw", c, t.GetName(NameStyle.Full, 1));
 		c.LookAt(p);
 		c.renderer.NextFrame();
-		c.PlaySound("throw");
+		if (t.id == "1177")
+		{
+			c.PlaySound("throw_beachball");
+		}
+		else
+		{
+			c.PlaySound("throw");
+		}
 		EffectIRenderer result = null;
 		if (c.isSynced || p.IsSync)
 		{
@@ -216,7 +223,7 @@ public class ActThrow : ActBaseAttack
 					c.Talk("snow_hit");
 				}
 				Act.TC.Say("ball_hit");
-				Act.TC.Chara?.Pick(t);
+				Act.TC.Chara?.Pick(t, msg: false);
 				c.ModExp(108, 50);
 			}
 			break;

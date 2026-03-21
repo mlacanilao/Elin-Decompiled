@@ -129,7 +129,6 @@ public class SourceImporter : EClass
 		foreach (SourceCache sourceCache2 in array2)
 		{
 			string text2 = sourceCache2.SheetFile.ShortPath();
-			string key;
 			if (sourceCache2.IsDirtyOrEmpty)
 			{
 				if (!dictionary.TryGetValue(sourceCache2, out var value3) || value3.Item2.Length == 0)
@@ -140,8 +139,7 @@ public class SourceImporter : EClass
 				ISheet[] item = value3.Item2;
 				foreach (ISheet sheet2 in item)
 				{
-					key = sheet2.SheetName;
-					if (key == "Element" || key == "Material")
+					if (prefetchSheetNames.Contains(sheet2.SheetName))
 					{
 						continue;
 					}
@@ -161,7 +159,7 @@ public class SourceImporter : EClass
 			}
 			foreach (KeyValuePair<string, SourceData.BaseRow[]> item3 in sourceCache2.Source)
 			{
-				item3.Deconstruct(out key, out var value4);
+				item3.Deconstruct(out var key, out var value4);
 				string text3 = key;
 				SourceData.BaseRow[] array5 = value4;
 				SourceData sourceData2 = FindSourceByName(text3);

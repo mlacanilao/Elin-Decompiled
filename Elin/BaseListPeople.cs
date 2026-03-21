@@ -77,11 +77,11 @@ public class BaseListPeople : ListOwner<Chara, ItemGeneral>
 				}
 			}
 			AddSubButtonWork(b, a);
-			Room room = a.FindRoom();
-			TraitBed bed = a.FindBed();
-			if (a.memberType == FactionMemberType.Default)
+			if (memberType == FactionMemberType.Default)
 			{
-				b.AddSubButton(EClass.core.refs.icons.home, delegate
+				Room room = a.FindRoom();
+				TraitBed bed = a.FindBed();
+				UIButton uIButton = b.AddSubButton(EClass.core.refs.icons.home, delegate
 				{
 					if (room == null)
 					{
@@ -104,8 +104,19 @@ public class BaseListPeople : ListOwner<Chara, ItemGeneral>
 						{
 						});
 					}
-				}, "home").icon.SetAlpha((bed != null) ? 1f : 0.4f);
+				}, "home");
+				uIButton.icon.SetAlpha((bed != null) ? 1f : 0.4f);
+				uIButton.SetActive(enable: true);
 			}
+			else
+			{
+				b.AddSubButton(EClass.core.refs.icons.home, null, null, null, "home").SetActive(enable: false);
+			}
+		}
+		else
+		{
+			b.AddSubButton(EClass.core.refs.icons.work, null, null, null, "room").SetActive(enable: false);
+			b.AddSubButton(EClass.core.refs.icons.home, null, null, null, "home").SetActive(enable: false);
 		}
 		if (ShowCharaSheet && EClass.debug.showExtra)
 		{
@@ -135,7 +146,7 @@ public class BaseListPeople : ListOwner<Chara, ItemGeneral>
 				break;
 			}
 		}
-		b.AddSubButton(EClass.core.refs.icons.work, delegate
+		UIButton uIButton = b.AddSubButton(EClass.core.refs.icons.work, delegate
 		{
 			if (roomWork == null)
 			{
@@ -149,7 +160,9 @@ public class BaseListPeople : ListOwner<Chara, ItemGeneral>
 		}, null, delegate(UITooltip t)
 		{
 			WriteHobbies(t, a, roomWork);
-		}, "room").icon.SetAlpha(flag ? 1f : 0.4f);
+		}, "room");
+		uIButton.icon.SetAlpha(flag ? 1f : 0.4f);
+		uIButton.SetActive(enable: true);
 	}
 
 	public void WriteHobbies(UITooltip t, Chara a, BaseArea roomWork)
@@ -214,6 +227,7 @@ public class BaseListPeople : ListOwner<Chara, ItemGeneral>
 							num = 1f;
 						}
 					}
+					num = (float)Math.Round(num, 1);
 					t.note.AddText("NoteText_small", "・ " + "work_produce".lang(s.ToTitleCase(), num.ToString() ?? ""));
 				}
 				if (!h.source.elements.IsEmpty())

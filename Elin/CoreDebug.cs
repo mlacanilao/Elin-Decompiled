@@ -977,12 +977,39 @@ public class CoreDebug : EScriptable
 		}
 		if (Input.GetKeyDown(KeyCode.F3))
 		{
-			Thing thing = EClass._map.things.First((Thing _t) => _t.id == "cloud");
-			if (thing != null)
+			for (int i = 0; i < 10; i++)
 			{
-				Debug.Log(EClass.sources.cards.map["cloud"].pref == thing.Pref);
-				Debug.Log(EClass.sources.cards.map["cloud"].pref == thing.renderer.GetPref());
+				Thing thing = ThingGen.Create("egg_fertilized");
+				thing.TryMakeRandomItem(40);
+				thing.SetEncLv(200);
+				EClass.pc.Pick(thing);
 			}
+			foreach (Chara deadChara in EClass._map.deadCharas)
+			{
+				Debug.Log(deadChara);
+			}
+			EClass.core.steam.CheckUpdate();
+			EClass.player.flags.loytelMartLv++;
+			Msg.Say("loytelmart:" + EClass.player.flags.loytelMartLv);
+			Guild.Fighter.relation.rank = 20;
+			Guild.Mage.relation.rank = 20;
+			Guild.Thief.relation.rank = 20;
+			Guild.Merchant.relation.rank = 20;
+			if (EClass.Branch != null)
+			{
+				EClass.Branch.ModExp(EClass.Branch.GetNextExp());
+			}
+			foreach (Chara item in EClass._map.charas.ToList())
+			{
+				item.AddExp(item.ExpToNext);
+				item.Vomit();
+			}
+			EClass.pc.PlayEffect("boost");
+			EClass.pc.PlaySound("boost");
+			EClass.pc.elements.SetBase(306, 100);
+			EClass.pc.elements.SetBase(85, 100);
+			EClass.pc.feat += 10;
+			EClass.player.totalFeat += 10;
 			return;
 		}
 		if (Input.GetKeyDown(KeyCode.F4))
@@ -1054,7 +1081,7 @@ public class CoreDebug : EScriptable
 			if (Input.GetKey(KeyCode.F9))
 			{
 				EClass.scene.paused = false;
-				for (int i = 0; i < advanceMin; i++)
+				for (int j = 0; j < advanceMin; j++)
 				{
 					EClass.game.updater.FixedUpdate();
 				}
@@ -1135,9 +1162,9 @@ public class CoreDebug : EScriptable
 		{
 			if (Input.GetMouseButtonDown(0))
 			{
-				foreach (Card item in list)
+				foreach (Card item2 in list)
 				{
-					Debug.Log(item.Name + "/" + item.dir + "/" + item.flipX + "/" + item.angle);
+					Debug.Log(item2.Name + "/" + item2.dir + "/" + item2.flipX + "/" + item2.angle);
 				}
 			}
 			if (Input.GetMouseButtonDown(1))
@@ -1170,9 +1197,9 @@ public class CoreDebug : EScriptable
 			}
 			if (key)
 			{
-				foreach (Card item2 in EClass._map.Roaming.all)
+				foreach (Card item3 in EClass._map.Roaming.all)
 				{
-					EClass._zone.RemoveCard(item2);
+					EClass._zone.RemoveCard(item3);
 				}
 			}
 			else if (hitPoint.detail != null)
@@ -1251,9 +1278,9 @@ public class CoreDebug : EScriptable
 			{
 				break;
 			}
-			foreach (Card item3 in hitPoint.ListCards())
+			foreach (Card item4 in hitPoint.ListCards())
 			{
-				item3.renderer.PlayAnime(num5.ToEnum<AnimeID>());
+				item4.renderer.PlayAnime(num5.ToEnum<AnimeID>());
 			}
 			Debug.Log(num5.ToEnum<AnimeID>());
 			break;

@@ -57,6 +57,10 @@ public class TraitTicketFurniture : Trait
 			{
 				num = 10;
 			}
+			if (t.trait is TraitGarokkHammer)
+			{
+				num = 50;
+			}
 			num = Mathf.Max(num + EClass.player.little_dead - EClass.player.little_saved / 5, num);
 		}
 		return num;

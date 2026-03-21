@@ -135,6 +135,11 @@ public class ItemGeneral : UIItem, IPrefImage
 		return uIButton;
 	}
 
+	public UIButton GetSubButton(string id)
+	{
+		return subButtons.TryGetValue(id);
+	}
+
 	public void SetMainText(string lang, Sprite sprite = null, bool disableMask = true)
 	{
 		button1.mainText.SetText(lang.lang());

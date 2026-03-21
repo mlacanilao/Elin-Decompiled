@@ -66,6 +66,7 @@ public class ModManager : ModManagerCore
 			if (ModManagerCore.useLocalizations)
 			{
 				ImportSourceLocalizations(lang as string);
+				ModManagerCore.generateLocalizations = false;
 			}
 			ImportAllModDialogs();
 		});
@@ -113,31 +114,33 @@ public class ModManager : ModManagerCore
 
 	public void ImportSourceLocalizations(string lang)
 	{
-		string text = lang + "/SourceLocalization.json";
-		(FileInfo file, EMod package)[] filesEx = PackageIterator.GetFilesEx(text);
+		PackageIterator.RebuildAllMappings(lang);
 		SortedDictionary<string, string> sortedDictionary = new SortedDictionary<string, string>();
 		Dictionary<string, SortedDictionary<string, string>> dictionary = new Dictionary<string, SortedDictionary<string, string>>();
-		(FileInfo, EMod)[] array = filesEx;
-		string key;
 		string value;
-		for (int i = 0; i < array.Length; i++)
+		string key;
+		foreach (string item in FileMapping.FallbackLut[lang].Append(lang).Distinct())
 		{
-			var (fileInfo, eMod) = array[i];
-			try
+			(FileInfo, EMod)[] filesEx = PackageIterator.GetFilesEx(item + "/SourceLocalization.json", useCache: false);
+			for (int i = 0; i < filesEx.Length; i++)
 			{
-				SortedDictionary<string, string> sortedDictionary2 = IO.LoadFile<SortedDictionary<string, string>>(fileInfo.FullName);
-				foreach (KeyValuePair<string, string> item in sortedDictionary2)
+				var (fileInfo, eMod) = filesEx[i];
+				try
 				{
-					item.Deconstruct(out key, out value);
-					string key2 = key;
-					string value2 = value;
-					sortedDictionary[key2] = value2;
+					SortedDictionary<string, string> sortedDictionary2 = IO.LoadFile<SortedDictionary<string, string>>(fileInfo.FullName);
+					foreach (KeyValuePair<string, string> item2 in sortedDictionary2)
+					{
+						item2.Deconstruct(out value, out key);
+						string key2 = value;
+						string value2 = key;
+						sortedDictionary[key2] = value2;
+					}
+					dictionary[eMod.id] = sortedDictionary2;
 				}
-				dictionary[eMod.id] = sortedDictionary2;
-			}
-			catch (Exception arg)
-			{
-				Debug.LogError($"#source localization failed to load {fileInfo.ShortPath()}\n{arg}");
+				catch (Exception arg)
+				{
+					Debug.LogError($"#source localization failed to load {fileInfo.ShortPath()}\n{arg}");
+				}
 			}
 		}
 		JsonSerializerSettings setting = new JsonSerializerSettings
@@ -145,13 +148,13 @@ public class ModManager : ModManagerCore
 			PreserveReferencesHandling = PreserveReferencesHandling.None,
 			NullValueHandling = NullValueHandling.Ignore
 		};
-		foreach (EMod value4 in base.MappedPackages.Values)
+		foreach (BaseModPackage package in packages)
 		{
-			if (!(value4 is ModPackage modPackage) || value4.builtin || !value4.activated)
+			if (!(package is ModPackage modPackage) || package.builtin || !package.activated)
 			{
 				continue;
 			}
-			HashSet<SourceData.BaseRow> sourceRows = value4.sourceRows;
+			HashSet<SourceData.BaseRow> sourceRows = modPackage.sourceRows;
 			if (sourceRows == null || sourceRows.Count <= 0)
 			{
 				continue;
@@ -161,26 +164,23 @@ public class ModManager : ModManagerCore
 			{
 				continue;
 			}
-			if (Lang.IsBuiltin(lang))
-			{
-				break;
-			}
 			try
 			{
 				SortedDictionary<string, string> sortedDictionary3 = dictionary.GetValueOrDefault(modPackage.id) ?? new SortedDictionary<string, string>();
 				SortedDictionary<string, string> sortedDictionary4 = modPackage.ExportSourceLocalizations();
 				SortedDictionary<string, string> final = new SortedDictionary<string, string>();
-				foreach (KeyValuePair<string, string> item2 in sortedDictionary4)
+				foreach (KeyValuePair<string, string> item3 in sortedDictionary4)
 				{
-					item2.Deconstruct(out value, out key);
-					string key3 = value;
-					string defaultValue = key;
+					item3.Deconstruct(out key, out value);
+					string key3 = key;
+					string defaultValue = value;
 					final[key3] = sortedDictionary3.GetValueOrDefault(key3, defaultValue);
 				}
-				if (sortedDictionary3.Count != final.Count || sortedDictionary3.Any((KeyValuePair<string, string> kv) => !final.TryGetValue(kv.Key, out var value3) || value3 != kv.Value))
+				if (sortedDictionary3.Count != final.Count || sortedDictionary3.Any((KeyValuePair<string, string> kv) => !final.ContainsKey(kv.Key)))
 				{
-					IO.SaveFile(Path.Combine(modPackage.dirInfo.FullName, "LangMod", text), final, compress: false, setting);
-					Debug.Log($"#source localization updated {text} / {modPackage}");
+					string path = Path.Combine(modPackage.dirInfo.FullName, "LangMod/" + lang + "/SourceLocalization.json");
+					IO.SaveFile(path, final, compress: false, setting);
+					Debug.Log($"#source localization updated {path.ShortPath()} / {modPackage}");
 				}
 			}
 			catch (Exception arg2)
@@ -201,17 +201,17 @@ public class ModManager : ModManagerCore
 				EClass.sources.materials
 			});
 			List<string> list = new List<string>();
-			foreach (EMod value in base.MappedPackages.Values)
+			foreach (ModPackage item in packages.OfType<ModPackage>())
 			{
-				if (value.builtin || !value.activated)
+				if (item.builtin || !item.activated)
 				{
 					continue;
 				}
-				foreach (FileInfo sourceSheet in value.Mapping.SourceSheets)
+				foreach (FileInfo sourceSheet in item.Mapping.SourceSheets)
 				{
 					if (!sourceSheet.Name.StartsWith(".") && !sourceSheet.Name.Contains("~"))
 					{
-						ModUtil.sourceImporter.fileProviders[sourceSheet.FullName] = value;
+						ModUtil.sourceImporter.fileProviders[sourceSheet.FullName] = item;
 						list.Add(sourceSheet.FullName);
 					}
 				}
