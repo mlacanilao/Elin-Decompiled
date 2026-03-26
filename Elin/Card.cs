@@ -7530,6 +7530,14 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 					return 5;
 				case "lunch_love":
 					return 20;
+				case "scroll_alias":
+					return 5;
+				case "scroll_biography":
+					return 5;
+				case "1268":
+					return 8;
+				case "1329":
+					return 20;
 				}
 				break;
 			case CurrencyType.Ecopo:

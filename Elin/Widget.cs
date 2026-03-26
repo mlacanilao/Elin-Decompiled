@@ -365,6 +365,22 @@ public class Widget : EMono, IChangeResolution, ISkinRoot
 		_rect.SetAnchor(p);
 	}
 
+	public TextAnchor RectPositionToTextAnchor(RectPosition p)
+	{
+		return p switch
+		{
+			RectPosition.TopCenter => TextAnchor.UpperCenter, 
+			RectPosition.BottomCenter => TextAnchor.LowerCenter, 
+			RectPosition.TopLEFT => TextAnchor.UpperLeft, 
+			RectPosition.BottomLEFT => TextAnchor.LowerLeft, 
+			RectPosition.TopRIGHT => TextAnchor.UpperRight, 
+			RectPosition.BottomRIGHT => TextAnchor.LowerRight, 
+			RectPosition.Left => TextAnchor.MiddleLeft, 
+			RectPosition.Right => TextAnchor.MiddleRight, 
+			_ => TextAnchor.MiddleCenter, 
+		};
+	}
+
 	public void SetPivot(RectPosition p)
 	{
 		config.pivot = p;

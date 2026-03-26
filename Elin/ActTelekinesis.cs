@@ -42,12 +42,15 @@ public class ActTelekinesis : Spell
 
 	public override bool CanPerform()
 	{
-		if (!Act.CC.IsPC)
+		if (Act.CC.IsPC)
+		{
+			Act.TC = EClass.scene.mouseTarget.card;
+		}
+		if (Act.TC == null || Act.TC.pos.Equals(Act.CC.pos))
 		{
 			return false;
 		}
-		Act.TC = EClass.scene.mouseTarget.card;
-		if (Act.TC == null || Act.TC.pos.Equals(Act.CC.pos))
+		if (!Act.CC.IsPC && Act.CC.Dist(Act.TC) != 1)
 		{
 			return false;
 		}

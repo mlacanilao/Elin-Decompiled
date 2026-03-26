@@ -21,7 +21,9 @@ public class QuestDefenseGame : QuestInstance
 
 	public override bool FameContent => useFame;
 
-	public override int FameOnComplete => (lastWave * 8 + difficulty * 10) * (100 + bonus * 5) / 100;
+	public override int FameOnComplete => (LastWaveBonus * 8 + difficulty * 10) * (100 + bonus * 5) / 100;
+
+	public int LastWaveBonus => Mathf.Min(lastWave, 1000000);
 
 	public override ZoneEventQuest CreateEvent()
 	{
@@ -42,7 +44,7 @@ public class QuestDefenseGame : QuestInstance
 	public override void OnBeforeComplete()
 	{
 		Debug.Log("QuestDefenseGame: " + lastWave + "/" + bonus);
-		bonusMoney += EClass.rndHalf(lastWave * 400 * (100 + bonus * 5) / 100);
+		bonusMoney += EClass.rndHalf(LastWaveBonus * 400 / 100 * (100 + bonus * 5));
 	}
 
 	public override string GetTextProgress()

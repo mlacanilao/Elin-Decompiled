@@ -8,10 +8,6 @@ public class ActKiss : Ability
 		{
 			return false;
 		}
-		if (Act.TC.IsPC && Act.TC.Chara.parasite == null && Act.TC.Chara.ride == null)
-		{
-			return false;
-		}
 		return true;
 	}
 

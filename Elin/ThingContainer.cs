@@ -44,8 +44,6 @@ public class ThingContainer : List<Thing>
 
 	private static List<ThingContainer> _listContainers = new List<ThingContainer>();
 
-	private static List<Thing> tempList = new List<Thing>();
-
 	[JsonIgnore]
 	public int GridSize => width * height;
 
@@ -529,23 +527,22 @@ public class ThingContainer : List<Thing>
 	public void AddCurrency(Card owner, string id, int a, SourceMaterial.Row mat = null)
 	{
 		int num = a;
-		ListCurrency(id);
-		foreach (Thing temp in tempList)
+		foreach (Thing item in ListCurrency(id))
 		{
-			if (!(temp.id != id) && (mat == null || temp.material == mat) && (num <= 0 || temp.Num + num > 0))
+			if (!(item.id != id) && (mat == null || item.material == mat) && (num <= 0 || item.Num + num > 0))
 			{
 				if (num > 0)
 				{
-					temp.ModNum(num);
+					item.ModNum(num);
 					return;
 				}
-				if (temp.Num + num >= 0)
+				if (item.Num + num >= 0)
 				{
-					temp.ModNum(num);
+					item.ModNum(num);
 					return;
 				}
-				num += temp.Num;
-				temp.ModNum(-temp.Num);
+				num += item.Num;
+				item.ModNum(-item.Num);
 			}
 		}
 		if (num != 0 && num > 0)
@@ -628,13 +625,13 @@ public class ThingContainer : List<Thing>
 
 	public Thing FindBest<T>(Func<Thing, int> func) where T : Trait
 	{
-		List((Thing t) => t.trait is T, onlyAccessible: true);
-		if (tempList.Count == 0)
+		List<Thing> list = List((Thing t) => t.trait is T, onlyAccessible: true);
+		if (list.Count == 0)
 		{
 			return null;
 		}
-		tempList.Sort((Thing a, Thing b) => func(b) - func(a));
-		return tempList[0];
+		list.Sort((Thing a, Thing b) => func(b) - func(a));
+		return list[0];
 	}
 
 	public Thing Find(Func<Thing, bool> func, bool recursive = true)
@@ -792,12 +789,13 @@ public class ThingContainer : List<Thing>
 
 	public List<Thing> ListCurrency(string id)
 	{
-		tempList.Clear();
-		_ListCurrency(id);
-		return tempList;
+		List<Thing> list = new List<Thing>();
+		list.Clear();
+		_ListCurrency(list, id);
+		return list;
 	}
 
-	private void _ListCurrency(string id)
+	private void _ListCurrency(List<Thing> tempList, string id)
 	{
 		using Enumerator enumerator = GetEnumerator();
 		while (enumerator.MoveNext())
@@ -805,7 +803,7 @@ public class ThingContainer : List<Thing>
 			Thing current = enumerator.Current;
 			if (current.CanSearchContents)
 			{
-				current.things._ListCurrency(id);
+				current.things._ListCurrency(tempList, id);
 			}
 			if (current.id == id)
 			{
@@ -816,12 +814,13 @@ public class ThingContainer : List<Thing>
 
 	public List<Thing> List(Func<Thing, bool> func, bool onlyAccessible = false)
 	{
-		tempList.Clear();
-		_List(func, onlyAccessible);
-		return tempList;
+		List<Thing> list = new List<Thing>();
+		list.Clear();
+		_List(list, func, onlyAccessible);
+		return list;
 	}
 
-	public void _List(Func<Thing, bool> func, bool onlyAccessible = false)
+	public void _List(List<Thing> tempList, Func<Thing, bool> func, bool onlyAccessible = false)
 	{
 		if (onlyAccessible && !owner.trait.CanSearchContent)
 		{
@@ -831,7 +830,7 @@ public class ThingContainer : List<Thing>
 		while (enumerator.MoveNext())
 		{
 			Thing current = enumerator.Current;
-			current.things._List(func, onlyAccessible);
+			current.things._List(tempList, func, onlyAccessible);
 			if (func(current))
 			{
 				tempList.Add(current);

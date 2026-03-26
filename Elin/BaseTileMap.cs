@@ -1434,6 +1434,7 @@ public class BaseTileMap : EMono
 							_actorPos.x += pref.x * (float)((!t.flipX) ? 1 : (-1));
 							_actorPos.z += pref.z;
 							thingPos.z += pref.z;
+							liquidLv -= (int)(num12 * 150f);
 							if (liquidLv < 0)
 							{
 								liquidLv = 0;

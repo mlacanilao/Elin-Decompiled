@@ -51,6 +51,7 @@ public class BaseWidgetNotice : Widget
 
 	public void _RefreshAll()
 	{
+		layout.childAlignment = RectPositionToTextAnchor(base.config.pivot);
 		OnRefresh();
 		foreach (BaseNotification i in list)
 		{
@@ -136,12 +137,6 @@ public class BaseWidgetNotice : Widget
 		{
 			Object.DestroyImmediate(n.item.gameObject);
 		}
-	}
-
-	public override void OnFlip()
-	{
-		layout.childAlignment = (flip ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft);
-		this.Rect().pivot = new Vector2(flip ? 1 : 0, this.Rect().pivot.y);
 	}
 
 	public override void OnSetContextMenu(UIContextMenu m)

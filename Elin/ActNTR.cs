@@ -12,6 +12,10 @@ public class ActNTR : Ability
 		{
 			return false;
 		}
+		if (!Act.CC.CanSeeLos(chara))
+		{
+			return false;
+		}
 		if (chara.conSleep != null || Act.CC.HasElement(1239) || chara.Evalue(418) < 0)
 		{
 			return true;

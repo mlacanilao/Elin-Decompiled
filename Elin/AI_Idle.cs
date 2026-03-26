@@ -458,6 +458,7 @@ public class AI_Idle : AIAct
 			{
 			case "azzrasizzle":
 			case "geist":
+			case "machine_speller":
 			{
 				if (EClass.rnd(20) != 0)
 				{

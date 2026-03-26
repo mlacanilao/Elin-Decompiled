@@ -1704,6 +1704,7 @@ public class Trait : EClass
 			Add("book_resident", 1, 0);
 			Add("board_party", 1, 0);
 			Add("board_party2", 1, 0);
+			Add("book_roster", 1, 0);
 			Add("3", 1, 0);
 			Add("4", 1, 0);
 			Add("5", 1, 0);
@@ -1959,7 +1960,7 @@ public class Trait : EClass
 					break;
 				case ShopType.Moyer:
 				{
-					for (int num13 = 1; num13 <= 17; num13++)
+					for (int num13 = 1; num13 <= 20; num13++)
 					{
 						AddAdvWeek(num13);
 					}
@@ -2184,9 +2185,12 @@ public class Trait : EClass
 				}
 				void AddAdvWeek(int i)
 				{
-					Thing thing7 = ThingGen.CreateRedBook("advweek_" + i);
-					thing7.c_priceFix = -90;
-					AddThing(thing7);
+					if (i != 18)
+					{
+						Thing thing7 = ThingGen.CreateRedBook("advweek_" + i);
+						thing7.c_priceFix = -90;
+						AddThing(thing7);
+					}
 				}
 				void AddCassette(int idCas, string idQuest, int phase)
 				{

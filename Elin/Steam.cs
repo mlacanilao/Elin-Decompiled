@@ -142,7 +142,7 @@ public class Steam : MonoBehaviour
 			for (int i = 0; i < keyValueTags.Length; i++)
 			{
 				StringKeyValuePair stringKeyValuePair = keyValueTags[i];
-				if (stringKeyValuePair.key == "id" && stringKeyValuePair.value == baseModPackage.id && results.Owner.id == App.Client.Owner.id)
+				if (stringKeyValuePair.key == "id" && stringKeyValuePair.value == baseModPackage.id && results.Owner.id == User.Client.Id)
 				{
 					Debug.Log("Updating Content");
 					UpdateUserContent(results.FileId);

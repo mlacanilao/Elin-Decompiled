@@ -14,8 +14,8 @@ public class QuestRandom : Quest
 
 	public override void OnDropReward()
 	{
-		int num = bonusMoney * (55 + difficulty * 15) / 100;
-		int num2 = rewardMoney + num;
+		long num = (long)bonusMoney * (long)(55 + difficulty * 15) / 100;
+		int num2 = MathEx.ClampToInt(num + rewardMoney, 10000000);
 		if (num2 > 0)
 		{
 			if (num > 0)

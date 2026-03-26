@@ -1,4 +1,4 @@
-public class TraitBookResident : TraitItem
+public class TraitBookRoster : TraitItem
 {
 	public override string LangUse => "actRead";
 
@@ -11,7 +11,7 @@ public class TraitBookResident : TraitItem
 			Msg.SayNothingHappen();
 			return false;
 		}
-		EClass.ui.AddLayer<LayerPeople>();
+		LayerPeople.CreateParty();
 		return false;
 	}
 }
