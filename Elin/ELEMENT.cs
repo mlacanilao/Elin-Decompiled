@@ -643,7 +643,7 @@ public class Element : EClass
 				}
 				else
 				{
-					string text3 = text2.Replace("#calc", Calc());
+					string text3 = text2.Replace("#calc", Calc()).Replace(";", ",");
 					if (!source.aliasRef.IsEmpty())
 					{
 						text3 = text3.Replace("#ele", EClass.sources.elements.alias[source.aliasRef].GetName().ToLower());

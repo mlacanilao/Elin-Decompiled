@@ -66,19 +66,26 @@ public class WidgetMouseover : Widget
 		}
 		else if (card != null)
 		{
-			text = card.GetHoverText();
-			if (roster == null)
+			if (EMono._zone.IsRegion && !card.IsPCFactionOrMinion)
 			{
-				int count = EMono.scene.mouseTarget.cards.Count;
-				if (count > 1)
-				{
-					text += "otherCards".lang((count - 1).ToString() ?? "");
-				}
+				text = "???";
 			}
-			text += card.GetHoverText2();
-			if (roster == null && mouseTarget.target != card)
+			else
 			{
-				text = text + Environment.NewLine + mouseTarget.target.InspectName;
+				text = card.GetHoverText();
+				if (roster == null)
+				{
+					int count = EMono.scene.mouseTarget.cards.Count;
+					if (count > 1)
+					{
+						text += "otherCards".lang((count - 1).ToString() ?? "");
+					}
+				}
+				text += card.GetHoverText2();
+				if (roster == null && mouseTarget.target != card)
+				{
+					text = text + Environment.NewLine + mouseTarget.target.InspectName;
+				}
 			}
 		}
 		else if (mouseTarget.target != null)

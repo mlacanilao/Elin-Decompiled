@@ -18,9 +18,9 @@ public class ZonePreEnterEncounter : ZonePreEnterEvent
 		{
 			List<Chara> list = new List<Chara>();
 			Chara leader = null;
-			if (mob.id == "merchant_travel")
+			if (mob.trait is TraitMerchantTravel)
 			{
-				lv = Mathf.Max(20, EClass.pc.FameLv * 5);
+				lv = Mathf.Max(20, EClass.pc.FameLv * 2);
 				Point randomPointInRadius = EClass.pc.pos.GetRandomPointInRadius(2, 5, requireLos: false, allowChara: false);
 				for (int i = 0; i < EClass.rndHalf(12); i++)
 				{
@@ -35,7 +35,7 @@ public class ZonePreEnterEncounter : ZonePreEnterEvent
 						else
 						{
 							string[] source = new string[5] { "merc", "merc_archer", "merc_mage", "merc_warrior", "dog_hound" };
-							chara = EClass._zone.SpawnMob(randomPointInRadius2, SpawnSetting.Mob(source.RandomItem(), null, lv));
+							chara = EClass._zone.SpawnMob(randomPointInRadius2, SpawnSetting.Mob(source.RandomItem(), null, lv * 2 / 3));
 							Chara chara2 = chara;
 							Hostility hostility2 = (chara.c_originalHostility = Hostility.Neutral);
 							chara2.hostility = hostility2;

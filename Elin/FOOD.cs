@@ -4,7 +4,7 @@ public class FOOD
 
 	public const int food_god = 758;
 
-	public const int food_undead = 709;
+	public const int food_human = 708;
 
 	public const int food_blood = 710;
 
@@ -24,13 +24,13 @@ public class FOOD
 
 	public const int kirimi = 707;
 
-	public const int food_human = 708;
+	public const int food_undead = 709;
 
 	public const int gainWeight = 705;
 
 	public static readonly int[] IDS = new int[14]
 	{
-		764, 758, 709, 710, 700, 757, 702, 703, 704, 701,
-		706, 707, 708, 705
+		764, 758, 708, 710, 700, 757, 702, 703, 704, 701,
+		706, 707, 709, 705
 	};
 }

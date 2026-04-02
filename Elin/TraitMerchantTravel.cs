@@ -4,7 +4,7 @@ public class TraitMerchantTravel : TraitMerchant
 	{
 		get
 		{
-			if (!base.owner.IsPCFactionOrMinion)
+			if (!base.owner.IsPCFactionOrMinion && !EClass._zone.IsPCFactionOrTent)
 			{
 				return base.owner.LV;
 			}

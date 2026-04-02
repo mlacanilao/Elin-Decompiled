@@ -107,14 +107,19 @@ public class AI_Fuck : AIAct
 		{
 			yield return DoGoto(target.pos, destDist, ignoreConnection: true);
 		}
-		cc.Say((variation == Variation.Slime) ? "slime_start" : ((variation == Variation.Bloodsuck) ? "suck_start" : (Type.ToString() + "_start")), cc, tc);
+		cc.Say((this.variation == Variation.Slime) ? "slime_start" : ((this.variation == Variation.Bloodsuck) ? "suck_start" : (Type.ToString() + "_start")), cc, tc);
 		isFail = () => !tc.IsAliveInCurrentZone || tc.Dist(owner) > 3;
 		if (Type == FuckType.tame)
 		{
 			cc.SetTempHand(1104, -1);
 		}
-		maxProgress = ((variation == Variation.NTR || variation == Variation.Bloodsuck) ? 10 : 25);
-		switch (variation)
+		maxProgress = ((this.variation == Variation.NTR || this.variation == Variation.Bloodsuck) ? 10 : 25);
+		Variation variation = this.variation;
+		if ((uint)(variation - 3) <= 2u)
+		{
+			maxProgress = maxProgress * 100 / (100 + owner.Evalue(1664) * 50);
+		}
+		switch (this.variation)
 		{
 		case Variation.Succubus:
 			cc.Talk("seduce");
@@ -137,7 +142,7 @@ public class AI_Fuck : AIAct
 			switch (Type)
 			{
 			case FuckType.fuck:
-				if (variation == Variation.NTR)
+				if (this.variation == Variation.NTR)
 				{
 					cc.Say("ntr", cc, tc);
 				}
@@ -164,13 +169,13 @@ public class AI_Fuck : AIAct
 				{
 					((EClass.rnd(2) == 0) ? cc : tc).PlayEffect("love2");
 				}
-				if (variation == Variation.Slime)
+				if (this.variation == Variation.Slime)
 				{
 					owner.DoHostileAction(target);
 				}
 				if (EClass.rnd(3) == 0 || sell)
 				{
-					if (variation == Variation.Slime)
+					if (this.variation == Variation.Slime)
 					{
 						target.AddCondition<ConSupress>(200, force: true);
 					}
@@ -179,7 +184,7 @@ public class AI_Fuck : AIAct
 						target.AddCondition<ConWait>(50, force: true);
 					}
 				}
-				if (variation == Variation.Bloodsuck || variation == Variation.Slime)
+				if (this.variation == Variation.Bloodsuck || this.variation == Variation.Slime)
 				{
 					owner.pos.TryWitnessCrime(cc, tc, 4, (Chara c) => EClass.rnd(cc.HasCondition<ConTransmuteBat>() ? 50 : 20) == 0);
 				}

@@ -5407,30 +5407,30 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 					num5 = Mathf.Max(1, num5 * (50 + EClass.game.principal.dropRateMtp * 50) / 100);
 				}
 				List<Thing> list2 = new List<Thing>();
-				foreach (Thing thing4 in things)
+				foreach (Thing thing6 in things)
 				{
-					if (thing4.HasTag(CTAG.gift) || thing4.trait is TraitChestMerchant)
+					if (thing6.HasTag(CTAG.gift) || thing6.trait is TraitChestMerchant)
 					{
 						continue;
 					}
-					if (thing4.isGifted || thing4.rarity >= Rarity.Artifact || thing4.trait.DropChance > EClass.rndf(1f))
+					if (thing6.isGifted || thing6.rarity >= Rarity.Artifact || thing6.trait.DropChance > EClass.rndf(1f))
 					{
-						list.Add(thing4);
+						list.Add(thing6);
 					}
-					else if (thing4.IsEquipmentOrRanged)
+					else if (thing6.IsEquipmentOrRanged)
 					{
-						if (thing4.rarity >= Rarity.Legendary)
+						if (thing6.rarity >= Rarity.Legendary)
 						{
-							list2.Add(thing4);
+							list2.Add(thing6);
 						}
 						else if (EClass.rnd(100) == 0)
 						{
-							list.Add(thing4);
+							list.Add(thing6);
 						}
 					}
 					else if (EClass.rnd(5) == 0)
 					{
-						list.Add(thing4);
+						list.Add(thing6);
 					}
 				}
 				if (num5 > 0 && list2.Count > 0)
@@ -5480,13 +5480,43 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 						}
 					}
 				}
+				if (trait is TraitMerchantTravel)
+				{
+					trait.OnBarter();
+					Thing thing4 = things.Find<TraitChestMerchant>();
+					if (thing4 != null)
+					{
+						Rand.SetSeed(uid);
+						int num8 = 1 + EClass.rnd(3);
+						List<Thing> list3 = thing4.things.ToList();
+						if (trait is TraitMerchantTravel2)
+						{
+							list3.Shuffle();
+						}
+						else
+						{
+							list3.Sort((Thing a, Thing b) => b.GetValue() - a.GetValue());
+						}
+						Rand.SetSeed();
+						while (num8 > 0 && list3.Count != 0)
+						{
+							Thing thing5 = list3.First();
+							list3.Remove(thing5);
+							if (!thing5.IsUnique)
+							{
+								list.Add(thing5);
+								num8--;
+							}
+						}
+					}
+				}
 			}
 		}
-		foreach (Thing thing5 in things)
+		foreach (Thing thing7 in things)
 		{
-			if (thing5.GetInt(116) != 0)
+			if (thing7.GetInt(116) != 0)
 			{
-				list.Add(thing5);
+				list.Add(thing7);
 			}
 		}
 		Point nearestPoint = GetRootCard().pos;
@@ -7538,6 +7568,16 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 					return 8;
 				case "1329":
 					return 20;
+				case "statue_lulu":
+				case "statue_jure":
+				case "statue_ehe":
+					return 100;
+				}
+				break;
+			case CurrencyType.Money2:
+				if (id == "water_jure")
+				{
+					return 1000;
 				}
 				break;
 			case CurrencyType.Ecopo:

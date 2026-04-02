@@ -74,6 +74,8 @@ public class FACTION
 
 	public const int bfSea = 3605;
 
+	public const int bfCave = 3500;
+
 	public const int bfFertile = 3700;
 
 	public const int bfGeyser = 3701;
@@ -82,42 +84,40 @@ public class FACTION
 
 	public const int bfTranquil = 3703;
 
-	public const int bfVolcano = 3704;
-
 	public const int bfUndersea = 3606;
+
+	public const int bfHunt = 3705;
 
 	public const int bfFish = 3706;
 
 	public const int bfBreed = 3710;
 
-	public const int bfHunt = 3705;
-
-	public const int bfFreshAir = 3708;
-
-	public const int bfMonster = 3707;
-
-	public const int actBuildMine = 4001;
-
-	public const int actBuildTerrain = 4002;
-
-	public const int bfCave = 3500;
-
-	public const int actBuildCollect = 4004;
+	public const int actBuildInspect = 4006;
 
 	public const int actBuildRecipe = 4005;
 
-	public const int actBuildInspect = 4006;
+	public const int actBuildCollect = 4004;
 
 	public const int actBuildAnywhere = 4003;
+
+	public const int actBuildTerrain = 4002;
+
+	public const int actBuildMine = 4001;
+
+	public const int bfMonster = 3707;
+
+	public const int bfFreshAir = 3708;
+
+	public const int bfVolcano = 3704;
 
 	public static readonly int[] IDS = new int[53]
 	{
 		2205, 4000, 3900, 3805, 3804, 3800, 3802, 3801, 2003, 3784,
 		3803, 2115, 2120, 2117, 2118, 2119, 2207, 2200, 2201, 2202,
 		2206, 3783, 2203, 2204, 2116, 3782, 3709, 3780, 3781, 3600,
-		3601, 3602, 3603, 3604, 3605, 3700, 3701, 3702, 3703, 3704,
-		3606, 3706, 3710, 3705, 3708, 3707, 4001, 4002, 3500, 4004,
-		4005, 4006, 4003
+		3601, 3602, 3603, 3604, 3605, 3500, 3700, 3701, 3702, 3703,
+		3606, 3705, 3706, 3710, 4006, 4005, 4004, 4003, 4002, 4001,
+		3707, 3708, 3704
 	};
 }
 public class Faction : EClass

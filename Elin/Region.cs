@@ -348,7 +348,7 @@ public class Region : Zone
 				}
 			}
 		}
-		if (ListMobs().Count >= (EClass.debug.enable ? 100 : 6) || EClass.rnd(3) != 0)
+		if (ListMobs().Count >= (EClass.debug.enable ? 100 : 6) || EClass.rnd(EClass.debug.enable ? 1 : 3) != 0)
 		{
 			return;
 		}
@@ -359,10 +359,13 @@ public class Region : Zone
 			BiomeProfile biome = regionPoint.biome;
 			SpawnList list = ((biome.spawn.chara.Count <= 0) ? SpawnList.Get(biome.name, "chara", new CharaFilter
 			{
-				ShouldPass = (SourceChara.Row s) => s.biome == biome.name || s.biome.IsEmpty()
-			}) : SpawnList.Get(biome.spawn.GetRandomCharaId()));
+				ShouldPass = (SourceChara.Row s) => s.quality < 3 && (s.biome == biome.name || s.biome.IsEmpty())
+			}) : SpawnList.Get(biome.spawn.GetRandomCharaId(), null, new CharaFilter
+			{
+				ShouldPass = (SourceChara.Row s) => s.quality < 3
+			}));
 			Chara chara = null;
-			chara = ((EClass.rnd(EClass.debug.enable ? 2 : 50) != 0) ? CharaGen.CreateFromFilter(list, regionPoint.dangerLv) : CharaGen.Create("merchant_travel"));
+			chara = ((EClass.rnd(EClass.debug.enable ? 5 : 50) != 0) ? CharaGen.CreateFromFilter(list, regionPoint.dangerLv) : CharaGen.Create((EClass.rnd(5) == 0) ? "merchant_travel" : "merchant_travel2"));
 			if (chara != null && !(chara.trait is TraitUniqueMonster))
 			{
 				AddCard(chara, randomPoint);

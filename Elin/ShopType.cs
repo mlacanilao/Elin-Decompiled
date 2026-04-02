@@ -52,5 +52,6 @@ public enum ShopType
 	Moyer,
 	Curry,
 	KeeperOfGarden,
-	TravelMerchant
+	TravelMerchant,
+	TravelMerchant2
 }

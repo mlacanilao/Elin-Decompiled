@@ -173,16 +173,20 @@ public class DramaCustomSequence : EClass
 						Choice2("daGuide", "_Guide");
 					}
 				}
-				if (c.trait is TraitGM_Mage && Guild.Mage.relation.rank >= 4)
-				{
-					Choice2("daChangeDomain", "_changeDomain").DisableSound();
-				}
-				if (c.trait.ShopType != 0)
-				{
-					Choice2(c.trait.TextNextRestock, "_buy").DisableSound();
-				}
 				if (!EClass._zone.IsUserZone)
 				{
+					if (c.trait is TraitGM_Mage && Guild.Mage.relation.rank >= 4)
+					{
+						Choice2("daChangeDomain", "_changeDomain").DisableSound();
+					}
+					if (c.trait.ShopType != 0)
+					{
+						Choice2(c.trait.TextNextRestock, "_buy").DisableSound();
+						if (c.trait is TraitMerchantTravel && !c.IsPCFactionOrMinion)
+						{
+							Choice2("daRob", "_rob");
+						}
+					}
 					if (c.trait.SlaverType != 0)
 					{
 						Choice2(c.trait.TextNextRestockPet, "_buySlave").DisableSound();
@@ -1469,6 +1473,30 @@ public class DramaCustomSequence : EClass
 				TempTalkTopic("bout2", StepEnd);
 			});
 			Choice("no", StepDefault, cancel: true).SetOnClick(RumorChill);
+		}, null, StepDefault);
+		Step("_rob");
+		Method(delegate
+		{
+			TempTalkTopic("rob1", StepDefault);
+			Choice("yes_rob", delegate
+			{
+				sequence.Exit();
+				c.Talk("callGuards");
+				foreach (Chara chara in EClass._map.charas)
+				{
+					if (chara == c || chara.master == c)
+					{
+						chara.SetHostility(Hostility.Enemy);
+						chara.DoHostileAction(EClass.pc.party.members.RandomItem());
+					}
+				}
+				if (!EClass._zone.IsPCFaction && EClass._zone is Zone_Field)
+				{
+					EClass._zone.SetBGM(102);
+				}
+				EClass.player.ModKarma(1);
+			});
+			Choice("no_rob", StepDefault, cancel: true).SetOnClick(RumorChill);
 		}, null, StepDefault);
 		Step("_news");
 		Method(delegate
