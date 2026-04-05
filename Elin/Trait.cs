@@ -1668,26 +1668,32 @@ public class Trait : EClass
 		case ShopType.TravelMerchant2:
 			Add("tool_talisman", 1, 0);
 			Add("camera", 1, 0);
-			Add("dreambug", 10, 0);
-			Add("mathammer", 1, 0);
+			Add("dreambug", EClass.rndHalf(10), 0);
+			Add("mathammer", 1, 0).ChangeMaterial(MATERIAL.GetRandomMaterial(80));
 			Add("unicorn_horn", 1, 0);
 			Add("core_user", 1, 0);
 			Add("generator_hamster1", 1, 0);
 			Add("generator_hamster2", 1, 0);
 			Add("generator_solar", 1, 0);
 			Add("generator_wind", 1, 0);
-			Add("curtainL", 1, 0);
+			Add("curtainL", EClass.rndHalf(5), 0);
+			Add("1337", EClass.rndHalf(5), 0);
+			Add("1338", EClass.rndHalf(5), 0);
+			Add("1339", EClass.rndHalf(5), 0);
+			Add("1340", EClass.rndHalf(5), 0);
+			Add("1301", EClass.rndHalf(5), 0);
+			Add("1302", EClass.rndHalf(5), 0);
 			Add("censored_item", 1, 0);
-			Add("block_strawberry", 10, 0);
-			Add("block_cream", 10, 0);
-			Add("block_mango", 10, 0);
-			Add("block_cherry", 10, 0);
-			Add("block_chocoplate", 10, 0);
-			Add("block_banana", 10, 0);
-			Add("block_mousse", 10, 0);
-			Add("block_melon", 10, 0);
-			Add("block_kiwi", 10, 0);
-			Add("block_peach", 10, 0);
+			Add("block_strawberry", EClass.rndHalf(6), 0);
+			Add("block_cream", EClass.rndHalf(6), 0);
+			Add("block_mango", EClass.rndHalf(6), 0);
+			Add("block_cherry", EClass.rndHalf(6), 0);
+			Add("block_chocoplate", EClass.rndHalf(6), 0);
+			Add("block_banana", EClass.rndHalf(6), 0);
+			Add("block_mousse", EClass.rndHalf(6), 0);
+			Add("block_melon", EClass.rndHalf(6), 0);
+			Add("block_kiwi", EClass.rndHalf(6), 0);
+			Add("block_peach", EClass.rndHalf(6), 0);
 			Add("water", 1, 0);
 			if (EClass.rndSeed(EClass.debug.enable ? 1 : 5, owner.uid) == 0)
 			{

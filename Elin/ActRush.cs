@@ -37,7 +37,7 @@ public class ActRush : ActMelee
 		{
 			return false;
 		}
-		if (Act.TC.Chara?.mimicry != null)
+		if (Act.TC.Chara?.mimicry != null && Act.TC.Chara.mimicry.IsThing)
 		{
 			return false;
 		}

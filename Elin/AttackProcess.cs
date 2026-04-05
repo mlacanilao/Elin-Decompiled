@@ -485,18 +485,19 @@ public class AttackProcess : EClass
 				dMulti *= 1.25f;
 			}
 		}
-		int num2 = CC.Evalue(1355);
-		ConStrife condition = CC.GetCondition<ConStrife>();
-		if (condition != null)
-		{
-			num += condition.GetDice().Roll();
-		}
-		else if (num2 > 0)
+		if (CC.Evalue(1355) > 0)
 		{
 			num++;
 		}
 		num = (long)(dMulti * (float)num * dmgMulti);
-		return (long)Mathf.Clamp(num, 0f, 100000000f);
+		long num2 = 99999999L;
+		ConStrife condition = CC.GetCondition<ConStrife>();
+		if (condition != null)
+		{
+			num = num * (100 + condition.lv * 10) / 100;
+			num2 = num2 * (100 + condition.lv * 5) / 100;
+		}
+		return (long)Mathf.Clamp(num, 0f, num2);
 	}
 
 	public static void ProcShieldEncs(Chara CC, Card TC, int mtpChance = 100)

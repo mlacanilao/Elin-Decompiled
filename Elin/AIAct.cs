@@ -228,7 +228,7 @@ public class AIAct : Act
 				owner.PickHeld();
 			}
 		}
-		if (owner.mimicry != null && ShouldEndMimicry)
+		if (owner.mimicry != null && ShouldEndMimicry && owner.mimicry.ShouldEndMimicry(this))
 		{
 			owner.mimicry.Kill();
 		}

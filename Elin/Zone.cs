@@ -2529,6 +2529,13 @@ public class Zone : Spatial, ICardParent, IInspect
 					EClass._zone.AddCard(CharaGen.Create("priest"), randomSurface5);
 				}
 			}
+			if (base.Tile.isRoad)
+			{
+				for (int n = 0; n < EClass.rnd(4); n++)
+				{
+					EClass._zone.SpawnMob(map.GetCenterPos().GetRandomPointInRadius(2, 6, requireLos: false, allowChara: false), SpawnSetting.HomeGuest(EClass._zone.DangerLv));
+				}
+			}
 		}
 		map.plDay = CreatePlaylist(ref map._plDay, EClass.Sound.GetPlaylist(IDPlayList) ?? EClass.Sound.GetPlaylist("Day"));
 	}

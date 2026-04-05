@@ -298,7 +298,7 @@ public class AM_Adv : AM_BaseGameMode
 		}
 		foreach (Chara chara in EClass._map.charas)
 		{
-			if (chara.isSynced && chara.IsHostile(EClass.pc) && !chara.IsMultisize && EClass.pc.CanSee(chara) && chara.mimicry == null)
+			if (chara.isSynced && chara.IsHostile(EClass.pc) && !chara.IsMultisize && EClass.pc.CanSee(chara) && (chara.mimicry == null || !chara.mimicry.IsThing))
 			{
 				Vector3 vector = chara.pos.Position();
 				EClass.screen.guide.passGuideFloor.Add(vector.x, vector.y, vector.z - 0.01f, 23f, 0.3f);

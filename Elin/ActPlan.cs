@@ -534,7 +534,7 @@ public class ActPlan : EClass
 					int num = c2.Dist(EClass.pc);
 					if (num <= 1 || !EClass.pc.isBlind)
 					{
-						if (c2.mimicry != null && !c2.IsPCParty)
+						if (c2.mimicry != null && c2.mimicry.IsThing && !c2.IsPCParty)
 						{
 							if (num <= 1)
 							{
@@ -629,7 +629,7 @@ public class ActPlan : EClass
 				items.ForeachReverse(delegate(Card _c)
 				{
 					Chara c = _c.Chara;
-					if (c != null && (c.mimicry == null || c.IsPCParty))
+					if (c != null && (c.mimicry == null || c.mimicry.IsChara || c.IsPCParty))
 					{
 						bool flag3 = EClass.pc.CanSee(c);
 						if (flag3)
@@ -970,7 +970,7 @@ public class ActPlan : EClass
 			{
 				hotItem.TrySetAct(this);
 			}
-			bool flag = EClass.game.config.autoCombat.enable && EClass.scene.mouseTarget.TargetChara != null && EClass.scene.mouseTarget.TargetChara.mimicry == null;
+			bool flag = EClass.game.config.autoCombat.enable && EClass.scene.mouseTarget.TargetChara != null && (EClass.scene.mouseTarget.TargetChara.mimicry == null || EClass.scene.mouseTarget.TargetChara.mimicry.IsChara);
 			if (hotItem.Thing != null && hotItem.Thing.trait.DisableAutoCombat)
 			{
 				flag = false;

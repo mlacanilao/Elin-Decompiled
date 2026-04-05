@@ -47,7 +47,7 @@ public class RecipeManager : EClass
 		dict.Clear();
 		foreach (CardRow row in EClass.sources.cards.rows)
 		{
-			if (!row.isOrigin && (row.factory.IsEmpty() || !(row.factory[0] == "x")))
+			if (!row.isOrigin)
 			{
 				Create(row, "", row.isChara ? "-c" : "");
 			}
@@ -94,6 +94,10 @@ public class RecipeManager : EClass
 		recipeSource.type = type;
 		recipeSource.row = row;
 		recipeSource.isChara = row is SourceChara.Row;
+		if (!row.factory.IsEmpty() && row.factory[0] == "x")
+		{
+			recipeSource.noListing = true;
+		}
 		list.Add(recipeSource);
 		dict[recipeSource.id] = recipeSource;
 		_ = row.components;

@@ -1666,7 +1666,7 @@ public class BaseTileMap : EMono
 			}
 			if (chara != EMono.pc && chara != LayerDrama.alwaysVisible)
 			{
-				if (chara.mimicry != null)
+				if (chara.mimicry != null && chara.mimicry.IsThing)
 				{
 					if (flag3 || fogged || !this.cell.isSeen)
 					{

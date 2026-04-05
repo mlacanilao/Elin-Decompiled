@@ -124,10 +124,6 @@ public class RecipeSource : EClass
 
 	public List<Recipe.Ingredient> GetIngredients()
 	{
-		if (!row.factory.IsEmpty() && row.factory[0] == "x")
-		{
-			noListing = true;
-		}
 		if (row.components.Length == 0)
 		{
 			return DefaultIngredients;
@@ -171,10 +167,10 @@ public class RecipeSource : EClass
 						array3[0] = array3[0].Remove(0, 1);
 						break;
 					case '+':
-						goto IL_0164;
+						goto IL_0132;
 					}
 					break;
-					IL_0164:
+					IL_0132:
 					optional = true;
 					array3[0] = array3[0].Remove(0, 1);
 				}

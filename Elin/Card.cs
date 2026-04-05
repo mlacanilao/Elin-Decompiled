@@ -4325,13 +4325,13 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 			{
 				int num5 = 0;
 				int num6 = 0;
-				foreach (Condition condition2 in Chara.conditions)
+				foreach (Condition condition3 in Chara.conditions)
 				{
-					if (condition2.Type == ConditionType.Buff)
+					if (condition3.Type == ConditionType.Buff)
 					{
 						num5++;
 					}
-					else if (condition2.Type == ConditionType.Debuff)
+					else if (condition3.Type == ConditionType.Debuff)
 					{
 						num6++;
 					}
@@ -4373,24 +4373,30 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 		{
 			dmg = 0L;
 		}
-		if (dmg > 99999999)
+		long num9 = 99999999L;
+		ConStrife condition = GetCondition<ConStrife>();
+		if (condition != null)
 		{
-			dmg = 99999999L;
+			num9 = num9 * (100 + condition.lv * 5) / 100;
 		}
-		float num9 = Mathf.Clamp(dmg * 6 / MaxHP, 0f, 4f) + (float)((dmg > 0) ? 1 : 0);
-		int num10 = hp;
+		if (dmg > num9)
+		{
+			dmg = num9;
+		}
+		float num10 = Mathf.Clamp(dmg * 6 / MaxHP, 0f, 4f) + (float)((dmg > 0) ? 1 : 0);
+		int num11 = hp;
 		if (Evalue(1421) > 0)
 		{
-			long num11 = 0L;
-			long num12 = dmg;
+			long num12 = 0L;
+			long num13 = dmg;
 			if (hp > 0)
 			{
-				num12 = dmg - hp;
+				num13 = dmg - hp;
 				hp -= (int)dmg;
-				num11 += dmg;
+				num12 += dmg;
 				if (hp < 0 && Chara.mana.value >= 0)
 				{
-					num11 += hp;
+					num12 += hp;
 					hp = 0;
 				}
 			}
@@ -4398,22 +4404,22 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 			{
 				if (Evalue(1421) >= 2)
 				{
-					num12 /= 2;
+					num13 /= 2;
 				}
-				dmg = num12;
+				dmg = num13;
 				if (Chara.mana.value > 0)
 				{
-					num12 -= Chara.mana.value;
+					num13 -= Chara.mana.value;
 					Chara.mana.value -= (int)dmg;
-					num11 += dmg;
+					num12 += dmg;
 				}
 				if (Chara.mana.value <= 0)
 				{
-					hp -= (int)num12;
-					num11 += num12;
+					hp -= (int)num13;
+					num12 += num13;
 				}
 			}
-			dmg = num11;
+			dmg = num12;
 		}
 		else
 		{
@@ -4481,7 +4487,7 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 					if (origin != null && origin != this && Evalue(436) > 0 && !HasCondition<ConFractured>())
 					{
 						int half = (HasElement(1218) ? MaxHP : (MaxHP / 2));
-						if (num10 > half)
+						if (num11 > half)
 						{
 							EvadeDeath(delegate
 							{
@@ -4489,7 +4495,7 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 								Chara.AddCondition<ConFractured>((int)Mathf.Max(10f, 30f - Mathf.Sqrt(Evalue(436))));
 								hp = Mathf.Min(half * (int)Mathf.Sqrt(Evalue(436) * 2) / 100, MaxHP / 3);
 							});
-							goto IL_1075;
+							goto IL_1092;
 						}
 					}
 					if (zoneInstanceBout != null && (bool)LayerDrama.Instance)
@@ -4517,7 +4523,7 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 							if (EClass.player.invlunerable)
 							{
 								EvadeDeath(null);
-								goto IL_1075;
+								goto IL_1092;
 							}
 						}
 						if (Evalue(1220) > 0 && Chara.stamina.value >= (IsPC ? (Chara.stamina.max / 2) : (Chara.stamina.max / 3 * 2)))
@@ -4535,8 +4541,8 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 				}
 			}
 		}
-		goto IL_1075;
-		IL_1075:
+		goto IL_1092;
+		IL_1092:
 		if (trait.CanBeAttacked)
 		{
 			renderer.PlayAnime(AnimeID.HitObj);
@@ -4723,33 +4729,33 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 		}
 		else if ((attackSource == AttackSource.Melee || attackSource == AttackSource.Range) && origin != null && originalTarget == null)
 		{
-			(IsPC ? EClass.pc : origin).Say("dmgMelee" + num9 + (IsPC ? "pc" : ""), origin, this);
+			(IsPC ? EClass.pc : origin).Say("dmgMelee" + num10 + (IsPC ? "pc" : ""), origin, this);
 		}
 		else if (isChara)
 		{
-			int num13 = ((attackSource != AttackSource.Condition && attackSource != AttackSource.WeaponEnchant) ? 1 : 2);
-			if (num9 >= (float)num13)
+			int num14 = ((attackSource != AttackSource.Condition && attackSource != AttackSource.WeaponEnchant) ? 1 : 2);
+			if (num10 >= (float)num14)
 			{
 				if (e != Element.Void)
 				{
 					Say("dmg_" + e.source.alias, this);
 				}
-				if (e == Element.Void || num9 >= 2f)
+				if (e == Element.Void || num10 >= 2f)
 				{
-					Say("dmg" + num9, this);
+					Say("dmg" + num10, this);
 				}
 			}
 		}
 		onEvade?.Invoke();
 		if (isChara)
 		{
-			if (Chara.mimicry != null)
+			if (Chara.mimicry != null && Chara.mimicry.ShouldRevealOnDamage)
 			{
-				Chara.RemoveCondition<ConTransmuteMimic>();
+				Chara.mimicry.RevealMimicry(origin, surprise: false);
 			}
-			foreach (Condition condition3 in Chara.conditions)
+			foreach (Condition condition4 in Chara.conditions)
 			{
-				(condition3 as ConPeaky)?.OnHit();
+				(condition4 as ConPeaky)?.OnHit();
 			}
 			if (flag2)
 			{
@@ -4767,8 +4773,8 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 				}
 				if (attackSource == AttackSource.Melee || attackSource == AttackSource.Range)
 				{
-					int num14 = origin.Dist(this);
-					if (attackSource == AttackSource.Melee && HasElement(1221) && num14 <= Evalue(1221))
+					int num15 = origin.Dist(this);
+					if (attackSource == AttackSource.Melee && HasElement(1221) && num15 <= Evalue(1221))
 					{
 						int ele2 = ((Chara.MainElement == Element.Void) ? 924 : Chara.MainElement.id);
 						if (id == "hedgehog_ether")
@@ -4778,7 +4784,7 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 						Say("reflect_thorne", origin, this);
 						origin.DamageHP((int)Mathf.Clamp(dmg / 10, 1f, MaxHP / (origin.IsPowerful ? 200 : 20)), ele2, Power, AttackSource.Condition, this);
 					}
-					if (HasElement(1223) && num14 <= Evalue(1223))
+					if (HasElement(1223) && num15 <= Evalue(1223))
 					{
 						int ele3 = ((Chara.MainElement == Element.Void) ? 923 : Chara.MainElement.id);
 						Say("reflect_acid", this, origin);
@@ -4805,15 +4811,15 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 				}
 			}
 		}
-		int num15 = ((EClass.rnd(2) == 0) ? 1 : 0);
+		int num16 = ((EClass.rnd(2) == 0) ? 1 : 0);
 		if (attackSource == AttackSource.Condition)
 		{
-			num15 = 1 + EClass.rnd(2);
+			num16 = 1 + EClass.rnd(2);
 		}
-		if (num15 > 0)
+		if (num16 > 0)
 		{
 			bool flag3 = Chara.HasCondition<ConPoison>() || ((e.id == 915 || e.id == 923) && ResistLv(Evalue(955)) < 4);
-			AddBlood(num15, flag3 ? 6 : (-1));
+			AddBlood(num16, flag3 ? 6 : (-1));
 		}
 		if (dmg > 0 || (origin != null && origin.HasElement(1345)))
 		{
@@ -4827,14 +4833,14 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 		}
 		if (IsPC)
 		{
-			float num16 = (float)hp / (float)MaxHP;
+			float num17 = (float)hp / (float)MaxHP;
 			if (Evalue(1421) > 0)
 			{
-				num16 = (float)Chara.mana.value / (float)Chara.mana.max;
+				num17 = (float)Chara.mana.value / (float)Chara.mana.max;
 			}
-			if (num16 < 0.3f)
+			if (num17 < 0.3f)
 			{
-				PlaySound("heartbeat", 1f - num16 * 2f);
+				PlaySound("heartbeat", 1f - num17 * 2f);
 			}
 		}
 		if (!IsPC && hp < MaxHP / 5 && Evalue(423) <= 0 && dmg * 100 / MaxHP + 10 > EClass.rnd(IsPowerful ? 400 : 150) && !HasCondition<ConFear>())
@@ -4847,10 +4853,10 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 		}
 		if (Chara.HasCondition<ConWeapon>())
 		{
-			ConWeapon condition = Chara.GetCondition<ConWeapon>();
-			if (e.source.aliasRef == condition.sourceElement.aliasRef)
+			ConWeapon condition2 = Chara.GetCondition<ConWeapon>();
+			if (e.source.aliasRef == condition2.sourceElement.aliasRef)
 			{
-				condition.Mod(-1);
+				condition2.Mod(-1);
 			}
 		}
 		if (Chara.HasElement(1222) && (dmg >= MaxHP / 10 || EClass.rnd(20) == 0))
@@ -4905,29 +4911,29 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 				int valueOrDefault2 = (origin.Evalue(661) + weapon?.Evalue(661, ignoreGlobalElement: true)).GetValueOrDefault();
 				if (valueOrDefault > 0 && attackSource == AttackSource.Melee && origin.isChara && !origin.Chara.ignoreSPAbsorb && Chara.IsHostile(origin as Chara))
 				{
-					int num17 = EClass.rnd(3 + (int)Mathf.Clamp(dmg / 100, 0f, valueOrDefault / 10));
-					origin.Chara.stamina.Mod(num17);
+					int num18 = EClass.rnd(3 + (int)Mathf.Clamp(dmg / 100, 0f, valueOrDefault / 10));
+					origin.Chara.stamina.Mod(num18);
 					if (IsAliveInCurrentZone)
 					{
-						Chara.stamina.Mod(-num17);
+						Chara.stamina.Mod(-num18);
 					}
 				}
 				if (origin.HasElement(1350) && attackSource == AttackSource.Melee)
 				{
-					int num18 = EClass.rndHalf(2 + (int)Mathf.Clamp(dmg / 10, 0f, origin.Chara.GetPietyValue() + 10));
-					origin.Chara.mana.Mod(num18);
-					if (IsAliveInCurrentZone)
-					{
-						Chara.mana.Mod(-num18);
-					}
-				}
-				if (valueOrDefault2 > 0 && attackSource == AttackSource.Melee)
-				{
-					int num19 = EClass.rnd(2 + (int)Mathf.Clamp(dmg / 10, 0f, valueOrDefault2 + 10));
+					int num19 = EClass.rndHalf(2 + (int)Mathf.Clamp(dmg / 10, 0f, origin.Chara.GetPietyValue() + 10));
 					origin.Chara.mana.Mod(num19);
 					if (IsAliveInCurrentZone)
 					{
 						Chara.mana.Mod(-num19);
+					}
+				}
+				if (valueOrDefault2 > 0 && attackSource == AttackSource.Melee)
+				{
+					int num20 = EClass.rnd(2 + (int)Mathf.Clamp(dmg / 10, 0f, valueOrDefault2 + 10));
+					origin.Chara.mana.Mod(num20);
+					if (IsAliveInCurrentZone)
+					{
+						Chara.mana.Mod(-num20);
 					}
 				}
 			}
@@ -6136,7 +6142,10 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 			EClass.player.ModKarma(-1);
 		}
 		t.PlayEffect("kick");
-		t.mimicry?.RevealMimicry(this, surprise: false);
+		if (t.mimicry != null && t.mimicry.ShouldRevealOnContact)
+		{
+			t.mimicry.RevealMimicry(this, surprise: false);
+		}
 	}
 
 	public int ResistLvFrom(int ele)
@@ -7575,11 +7584,18 @@ public class Card : BaseCard, IReservable, ICardParent, IRenderSource, IGlobalVa
 				}
 				break;
 			case CurrencyType.Money2:
-				if (id == "water_jure")
+			{
+				string text = id;
+				if (!(text == "mathammer"))
 				{
-					return 1000;
+					if (!(text == "water_jure"))
+					{
+						break;
+					}
+					return 2000;
 				}
-				break;
+				return 50 + material.tier * material.tier * 10;
+			}
 			case CurrencyType.Ecopo:
 				switch (id)
 				{

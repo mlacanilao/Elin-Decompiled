@@ -405,9 +405,16 @@ public class AI_Idle : AIAct
 					}
 				}
 			}
-			if (!EClass._zone.IsRegion && owner.HasElement(1425) && EClass.rnd(5) == 0 && owner.mimicry == null)
+			if (!EClass._zone.IsRegion)
 			{
-				owner.UseAbility(8794, owner);
+				if (EClass.rnd(5) == 0 && owner.HasElement(1425) && owner.mimicry == null)
+				{
+					owner.UseAbility(8794, owner);
+				}
+				if (EClass.rnd(25) == 0 && owner.HasElement(1427) && owner.mimicry == null)
+				{
+					owner.UseAbility(8796, owner);
+				}
 			}
 			Party party = owner.party;
 			if (party == null || party.leader == owner || !party.leader.IsAliveInCurrentZone || owner.host != null || !EClass._zone.PetFollow)
@@ -1087,7 +1094,7 @@ public class AI_Idle : AIAct
 		string aiIdle = owner.source.aiIdle;
 		if (!(aiIdle == "stand") && !(aiIdle == "root"))
 		{
-			if (EClass.rnd(15) == 0 && owner.mimicry == null)
+			if (EClass.rnd(15) == 0 && (owner.mimicry == null || owner.mimicry.IsChara))
 			{
 				owner.MoveRandom();
 			}

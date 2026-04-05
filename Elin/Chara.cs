@@ -103,7 +103,7 @@ public class Chara : Card, IPathfindWalker
 
 	public ConSuspend conSuspend;
 
-	public ConTransmuteMimic mimicry;
+	public ConBaseTransmuteMimic mimicry;
 
 	public Emo2 emoIcon;
 
@@ -1384,7 +1384,7 @@ public class Chara : Card, IPathfindWalker
 	{
 		if (mimicry != null)
 		{
-			return mimicry.thing.GetName(style, num);
+			return mimicry.GetName(style, num);
 		}
 		if (base.isBackerContent && EClass.core.config.backer.Show(base.c_idBacker))
 		{
@@ -1835,6 +1835,8 @@ public class Chara : Card, IPathfindWalker
 		chara.hp = (int)Mathf.Clamp((float)chara.MaxHP * ((float)base.hp / (float)MaxHP) * 0.99f, 0f, chara.MaxHP);
 		chara.isCopy = true;
 		chara.isScaled = base.isScaled;
+		chara.c_altName = base.c_altName;
+		chara._alias = _alias;
 		if (HaveFur())
 		{
 			chara.c_fur = -1;
@@ -2945,7 +2947,10 @@ public class Chara : Card, IPathfindWalker
 			{
 				if (item.mimicry != null && item.IsHostile(this))
 				{
-					item.mimicry.RevealMimicry(this, surprise: true);
+					if (item.mimicry.ShouldRevealOnPush)
+					{
+						item.mimicry.RevealMimicry(this, surprise: true);
+					}
 					return MoveResult.Event;
 				}
 			}
@@ -4586,6 +4591,7 @@ public class Chara : Card, IPathfindWalker
 			}
 		}
 		held = t;
+		held._CreateRenderer();
 		if (held.GetLightRadius() > 0)
 		{
 			RecalculateFOV();
@@ -5639,7 +5645,11 @@ public class Chara : Card, IPathfindWalker
 			if (origin.IsPCParty || origin.IsPCPartyMinion)
 			{
 				int num = 0;
-				if (OriginalHostility >= Hostility.Friend && IsHuman && !base.IsPCFactionOrMinion)
+				if (trait is TraitMerchantTravel)
+				{
+					num = -20;
+				}
+				else if (OriginalHostility >= Hostility.Friend && IsHuman && !base.IsPCFactionOrMinion)
 				{
 					num = -5;
 				}
@@ -6598,7 +6608,7 @@ public class Chara : Card, IPathfindWalker
 		{
 			return false;
 		}
-		if (mimicry != null)
+		if (mimicry != null && mimicry.IsThing)
 		{
 			return false;
 		}
@@ -6611,7 +6621,7 @@ public class Chara : Card, IPathfindWalker
 		for (int i = 0; i < EClass._map.charas.Count; i++)
 		{
 			Chara chara2 = EClass._map.charas[i];
-			if (chara2 == this || !IsHostile(chara2) || !CanSee(chara2) || chara2.mimicry != null)
+			if (chara2 == this || !IsHostile(chara2) || !CanSee(chara2) || (chara2.mimicry != null && chara2.mimicry.IsThing))
 			{
 				continue;
 			}
@@ -6658,7 +6668,7 @@ public class Chara : Card, IPathfindWalker
 		for (int i = 0; i < EClass._map.charas.Count; i++)
 		{
 			Chara chara = EClass._map.charas[i];
-			if (chara != this && chara != enemy && chara.mimicry == null && IsHostile(chara) && Dist(chara) <= 1 && CanInteractTo(chara.pos))
+			if (chara != this && chara != enemy && (chara.mimicry == null || !chara.mimicry.IsThing) && IsHostile(chara) && Dist(chara) <= 1 && CanInteractTo(chara.pos))
 			{
 				DoHostileAction(chara);
 				enemy = chara;
@@ -6918,11 +6928,11 @@ public class Chara : Card, IPathfindWalker
 
 	public override string GetHoverText()
 	{
-		if (mimicry != null)
+		if (mimicry != null && mimicry.IsThing)
 		{
-			return mimicry.thing.GetHoverText();
+			return mimicry.GetHoverText();
 		}
-		string text = base.Name;
+		string text = ((mimicry != null) ? mimicry.GetName(NameStyle.Full) : base.Name);
 		if (IsFriendOrAbove())
 		{
 			text = text.TagColor(EClass.Colors.colorFriend);
@@ -6994,9 +7004,9 @@ public class Chara : Card, IPathfindWalker
 
 	public override string GetHoverText2()
 	{
-		if (mimicry != null)
+		if (mimicry != null && mimicry.IsThing)
 		{
-			return mimicry.thing.GetHoverText2();
+			return mimicry.GetHoverText2();
 		}
 		string text = "";
 		if (knowFav)
@@ -7038,6 +7048,10 @@ public class Chara : Card, IPathfindWalker
 			int num = 0;
 			foreach (BaseStats item3 in enumerable)
 			{
+				if (item3 is ConBaseTransmuteMimic)
+				{
+					continue;
+				}
 				string text4 = item3.GetPhaseStr();
 				if (text4.IsEmpty() || text4 == "#")
 				{

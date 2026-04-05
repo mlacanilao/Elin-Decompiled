@@ -428,6 +428,7 @@ public class CoreDebug : EScriptable
 				AddHotbar("pickaxe").ChangeMaterial(0);
 				break;
 			}
+			EClass.player.ModKeyItem("license_adv");
 			Thing thing = ThingGen.Create("backpack");
 			thing.AddCard(ThingGen.Create("rp_food", -1, 10).SetNum(30));
 			thing.AddCard(ThingGen.Create("rp_block", -1, 10).SetNum(30));
@@ -957,6 +958,7 @@ public class CoreDebug : EScriptable
 			Chara targetChara = EClass.scene.mouseTarget.TargetChara;
 			if (targetChara != null)
 			{
+				EClass.pc.Pick(CraftUtil.MakeLoveLunch(targetChara));
 				EClass.pc.Pick(targetChara.MakeEgg(effect: true, 10));
 				EClass.pc.Pick(targetChara.MakeGene());
 				TraitFoodEggFertilized.Incubate(targetChara.MakeEgg(effect: false, 1, addToZone: false, 100), targetChara.pos.GetNearestPoint(allowBlock: false, allowChara: false));

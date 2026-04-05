@@ -1196,6 +1196,13 @@ public class GoalCombat : Goal
 		{
 			AddAbility(item.act, 0, item.chance, item.pt);
 		}
+		if (owner.mimicry != null && owner.mimicry.IsChara)
+		{
+			foreach (ActList.Item item2 in owner.mimicry.Card.Chara.ability.list.items)
+			{
+				AddAbility(item2.act, 0, item2.chance, item2.pt);
+			}
+		}
 		AddAbility(ACT.Ranged);
 		AddAbility(ACT.Melee);
 		AddAbility(ACT.Item);

@@ -184,8 +184,6 @@ public class SKILL
 
 	public const int resAcid = 963;
 
-	public const int resCut = 964;
-
 	public const int resCurse = 972;
 
 	public const int resDamage = 971;
@@ -193,6 +191,8 @@ public class SKILL
 	public const int resDecay = 970;
 
 	public const int resImpact = 965;
+
+	public const int resCut = 964;
 
 	public const int gathering = 250;
 
@@ -204,13 +204,13 @@ public class SKILL
 
 	public const int eleLightning = 912;
 
+	public const int jewelry = 259;
+
 	public const int sculpture = 258;
 
 	public const int alchemy = 257;
 
 	public const int blacksmith = 256;
-
-	public const int handicraft = 261;
 
 	public const int lockpicking = 280;
 
@@ -232,7 +232,7 @@ public class SKILL
 
 	public const int negotiation = 291;
 
-	public const int jewelry = 259;
+	public const int weaving = 260;
 
 	public const int investing = 292;
 
@@ -252,7 +252,7 @@ public class SKILL
 
 	public const int hygine = 310;
 
-	public const int weaving = 260;
+	public const int handicraft = 261;
 
 	public const int faith = 306;
 
@@ -279,10 +279,10 @@ public class SKILL
 		93, 94, 100, 101, 73, 245, 65, 255, 916, 917,
 		918, 919, 921, 922, 923, 924, 925, 926, 950, 951,
 		952, 953, 915, 954, 956, 957, 958, 959, 960, 961,
-		962, 963, 964, 972, 971, 970, 965, 250, 955, 914,
-		920, 912, 258, 257, 256, 261, 280, 281, 285, 286,
-		913, 287, 288, 289, 290, 291, 259, 292, 300, 911,
-		910, 313, 312, 311, 293, 310, 260, 306, 305, 304,
+		962, 963, 972, 971, 970, 965, 964, 250, 955, 914,
+		920, 912, 259, 258, 257, 256, 280, 281, 285, 286,
+		913, 287, 288, 289, 290, 291, 260, 292, 300, 911,
+		910, 313, 312, 311, 293, 310, 261, 306, 305, 304,
 		303, 302, 301, 307
 	};
 }

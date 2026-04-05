@@ -155,7 +155,7 @@ public class ActThrow : ActBaseAttack
 		{
 			Msg.Say("shatter");
 		}
-		if (Act.TC?.Chara?.mimicry != null)
+		if (Act.TC?.Chara?.mimicry != null && Act.TC.Chara.mimicry.ShouldRevealOnContact)
 		{
 			Act.TC.Chara.mimicry.RevealMimicry(c, surprise: false);
 		}

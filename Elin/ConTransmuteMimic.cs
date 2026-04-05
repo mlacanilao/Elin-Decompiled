@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-public class ConTransmuteMimic : ConTransmute
+public class ConTransmuteMimic : ConBaseTransmuteMimic
 {
 	[JsonProperty]
 	public Thing thing;
 
-	public override bool HasDuration => false;
+	public override Card Card => thing;
 
 	public override RendererReplacer GetRendererReplacer()
 	{
@@ -40,19 +40,7 @@ public class ConTransmuteMimic : ConTransmute
 		base.OnBeforeStart();
 	}
 
-	public override void SetOwner(Chara _owner, bool onDeserialize = false)
-	{
-		base.SetOwner(_owner);
-		owner.mimicry = this;
-	}
-
-	public override void OnRemoved()
-	{
-		owner.mimicry = null;
-		base.OnRemoved();
-	}
-
-	public virtual void TrySetAct(ActPlan p)
+	public override void TrySetAct(ActPlan p)
 	{
 		if (thing.IsContainer)
 		{
@@ -62,18 +50,5 @@ public class ConTransmuteMimic : ConTransmute
 				return true;
 			}, owner, CursorSystem.Container);
 		}
-	}
-
-	public virtual void RevealMimicry(Card c, bool surprise)
-	{
-		if (owner.IsHostile(c.Chara))
-		{
-			owner.DoHostileAction(c, immediate: true);
-		}
-		if (surprise)
-		{
-			owner.AddCondition<ConAmbush>();
-		}
-		Kill();
 	}
 }

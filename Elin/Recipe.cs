@@ -357,7 +357,7 @@ public class Recipe : EClass
 		recipeCard.BuildIngredientList(t);
 		if (t.uid == 0 || recipeCard.ingredients[0].uid == 0 || recipeCard.ingredients[0].thing == null)
 		{
-			Debug.LogError("expection: invalid ingredient " + t);
+			Debug.LogError("exception: invalid ingredient " + t);
 		}
 		return recipeCard;
 	}
